@@ -25,6 +25,7 @@ export const StyledInput = styled.input`
     padding: 10px 16px;
     font-size : 19px;
     font-weight: 400;
+    font-family: 'Lato', sans-serif;
     border: none;
     border-radius: 8px;
     z-index: 1;
@@ -73,6 +74,7 @@ export const DropdownRow = styled.div`
         font-size: 19px;
         color: #515151;
         margin-left: 12px;
+        font-family: 'Lato', sans-serif;
     }
     :hover{
         background-color: #1877F2;
