@@ -1,8 +1,12 @@
+import TrendingPage from "./pages/TrendingPage";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 export default function App() {
   return (
-    <div className="App">
-      Front
-    </div>
+    <Router className="App">
+      <Routes>
+        <Route path="/" element={<TrendingPage />} />
+      </Routes>
+    </Router>
   );
 }
