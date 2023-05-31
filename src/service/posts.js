@@ -5,6 +5,11 @@ const getPosts = () => {
     return api.get('/posts');
 };
 
+const getPostsByHashtag = (hashtag) => {
+    return api.get(`/posts/${hashtag}`);
+};
+
 export default {
-    getPosts
+    getPosts,
+    getPostsByHashtag
 };
