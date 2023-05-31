@@ -4,9 +4,10 @@ import '@fontsource/lato/300.css';
 import '@fontsource/lato/400.css';
 import '@fontsource/lato/700.css';
 import '@fontsource/lato/900.css';
+import '@fontsource-variable/oswald';
 
 export const Container = styled.div`
-  max-width:900px;
+  max-width:980px;
   margin: 0 auto;
 
   h1{
@@ -22,11 +23,48 @@ export const PostsArea = styled.div`
 `;
 
 export const TrendingCard = styled.div`
-  
+  background-color:#171717;
+  width:301px;
+  max-height:406px;
+  color:white;
+  border-radius: 16px;
+  font-family:"lato", sans-serif;
+
+  a{
+    color:white;
+    text-decoration:none;
+  }
+
+  p{
+    text-transform:lowercase;
+    font-weight: 700;
+    font-size:19px;
+    padding:0 16px;
+  }
+`;
+
+export const TrendingCardTitle = styled.div`
+   h2{
+      font-size: 27px;
+      padding:0 16px;
+      font-weight: 700;
+      font-family: "Oswald Variable", sans-serif;
+    }
+
+    &::after{
+      content:"";
+      display:block;
+      width:100%;
+      height:1px;
+      background-color:white;
+      margin-top:16px;
+    }
 `;
 
 export const MainContent = styled.main`
   display:flex;
+  gap:25px;
+
 `;
 
 export const PostForm = styled.div`
@@ -48,6 +86,7 @@ export const PostForm = styled.div`
 
     img{
         width:50px;
+        border-radius:50%;
     }
 
     svg{
@@ -83,6 +122,3 @@ export const PostForm = styled.div`
   }
 `;
 
-export const Input = styled.input`
-  
-`;
