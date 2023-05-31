@@ -6,12 +6,8 @@ export default function App() {
   return (
     <Router className="App">
       <Routes>
-<<<<<<< HEAD
         <Route path="/timeline/hashtag/:hashtag" element={<TrendingPage />} />
-=======
-        <Route path="/" element={<TrendingPage />} />
         <Route path="/timeline" element={<TimelinePage />} />
->>>>>>> main
       </Routes>
     </Router>
   );
