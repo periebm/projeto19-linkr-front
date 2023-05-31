@@ -16,24 +16,30 @@ export const StyledForm = styled.form`
     margin: 0 auto;
     position: relative;
     width: 50%;
+    z-index: 1;
+    @media (max-width: 768px) {
+        width: 92%;
+    }
 `
 
 export const StyledInput = styled.input`
-    background-color: white;
     width: 100%;
     height: 45px;
     padding: 10px 16px;
+    padding-right: 50px;
     font-size : 19px;
     font-weight: 400;
     font-family: 'Lato', sans-serif;
     border: none;
     border-radius: 8px;
-    z-index: 1;
     :focus{
         outline: none;
     }
     ::placeholder{
         color: #C6C6C6;
+    }
+    @media (max-width: 768px) {
+        font-size : 17px;
     }
     `
 
@@ -43,6 +49,7 @@ export const StyledIcon = styled.div`
         right: 10px;
         color: #C6C6C6;
         font-size: 30px;
+        z-index: 1;
     `
 
 export const Dropdown = styled.div`
@@ -55,7 +62,7 @@ export const Dropdown = styled.div`
     background-color: #E7E7E7;
     padding: 24px 0px 16px 0;
     border-radius: 0 0 8px 8px;
-    visibility: ${(props)=> props.showSearch === false ? "hidden" : "visible"};
+    visibility: ${(props) => props.showSearch === false ? "hidden" : "visible"};
 `
 
 export const DropdownRow = styled.div`
@@ -78,6 +85,11 @@ export const DropdownRow = styled.div`
     }
     :hover{
         background-color: #1877F2;
+    }
+    @media (max-width: 768px) {
+        h3{
+        font-size: 17px;
+        }
     }
 
 `

@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { InputContainer, StyledIcon, StyledInput, StyledForm, Dropdown, DropdownRow } from "./styled"
 import { AiOutlineSearch } from 'react-icons/ai';
-import { useNavigate } from "react-router-dom";
+//import { useNavigate } from "react-router-dom";
 
 
 export default function SearchBar() {
@@ -66,17 +66,14 @@ export default function SearchBar() {
                     {
                         filterArray.map((u) => (
                             <DropdownRow key={u.id} onClick={()=>console.log(`navigate(/user/${u.id})`)}>
-                                <img src={u.url} alt="user image"/>
+                                <img src={u.url} alt=""/>
                                 <h3>{u.nome}</h3>
                             </DropdownRow>
                         ))
                             .slice(0, 10)
                     }
                 </Dropdown>
-
             </StyledForm>
-
-            <h1> AAAA AAA AAA </h1>
         </InputContainer>
     )
 
