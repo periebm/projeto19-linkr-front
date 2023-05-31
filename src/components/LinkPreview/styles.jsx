@@ -41,6 +41,9 @@ export const RightColumn = styled.div`
     overflow:hidden;
 
     img{
+        width:100%;
+        height:100%;
+        max-height:160px;
         /* width:100%; */
         height:100%;
         max-width:100%;
@@ -50,6 +53,7 @@ export const RightColumn = styled.div`
         border-bottom-right-radius: 11px;
     }
 `;
+
 
 export const ErrorContainer = styled.div`
   text-align:center;
