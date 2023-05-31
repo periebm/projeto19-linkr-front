@@ -7,15 +7,11 @@ import '@fontsource/lato/900.css';
 import '@fontsource-variable/oswald';
 
 export const Container = styled.div`
-  max-width:900px;
-
-export const Container = styled.div`
   max-width:980px;
   margin: 0 auto;
 
   h1{
     color:white;
-    font-family:"lato", sans-serif;
     font-family:"Oswald Variable", sans-serif;
     font-weight: 700;
     font-size: 43px;
@@ -30,13 +26,6 @@ export const PostsArea = styled.div`
 `;
 
 export const TrendingCard = styled.div`
-  
-`;
-
-export const MainContent = styled.main`
-  display:flex;
-`;
-
   background-color:#171717;
   width:301px;
   max-height:406px;
@@ -58,7 +47,6 @@ export const MainContent = styled.main`
 
   }
 `;
-
 
 export const TrendingCardTitle = styled.div`
    h2{
@@ -118,6 +106,8 @@ export const PostForm = styled.div`
         font-style: normal;
         font-weight: 400;
         font-size: 11px;
+
+        
     }
   }
 
@@ -145,10 +135,5 @@ export const PostForm = styled.div`
     font-style:normal;
     margin:0;
   }
-`;
-
-
-export const Input = styled.input`
-  
 `;
 
