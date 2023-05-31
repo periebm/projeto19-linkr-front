@@ -6,6 +6,8 @@ export const Container = styled.div`
   border: 1px solid #4D4D4D;
   border-radius: 11px;
   text-align:left;
+  margin-top:20px;
+  max-height:168px;
 
   cursor:pointer;
 `;
@@ -14,7 +16,6 @@ export const LeftColumn = styled.div`
     font-family: 'Lato';
     padding:24px 18px;
     align-items:flex-start !important;
-    gap:10px;
 
     h2{
         font-style: normal;
@@ -30,7 +31,6 @@ export const LeftColumn = styled.div`
     }
 
     p:last-child{
-        padding-top:10px;
         color: #CECECE;
     }
 `;
@@ -39,7 +39,8 @@ export const RightColumn = styled.div`
     display:flex;
     align-items:center;
     overflow:hidden;
-
+    max-height:167px;
+    
     img{
         height:100%;
         max-width:100%;
@@ -49,7 +50,6 @@ export const RightColumn = styled.div`
         border-bottom-right-radius: 11px;
     }
 `;
-
 
 export const ErrorContainer = styled.div`
   text-align:center;
