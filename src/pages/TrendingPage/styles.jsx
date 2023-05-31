@@ -12,7 +12,10 @@ export const Container = styled.div`
 
   h1{
     color:white;
-    font-family:"lato", sans-serif;
+    font-family:"Oswald Variable", sans-serif;
+    font-weight: 700;
+    font-size: 43px;
+    margin:50px 0 41px;
   }
 `;
 
@@ -40,15 +43,18 @@ export const TrendingCard = styled.div`
     font-weight: 700;
     font-size:19px;
     padding:0 16px;
+    margin-top:10px;
+
   }
 `;
+
 
 export const TrendingCardTitle = styled.div`
    h2{
       font-size: 27px;
-      padding:0 16px;
       font-weight: 700;
       font-family: "Oswald Variable", sans-serif;
+      padding:16px;
     }
 
     &::after{
@@ -56,8 +62,8 @@ export const TrendingCardTitle = styled.div`
       display:block;
       width:100%;
       height:1px;
-      background-color:white;
-      margin-top:16px;
+      background-color:#484848;
+      margin-bottom:22px;
     }
 `;
 
@@ -101,6 +107,8 @@ export const PostForm = styled.div`
         font-style: normal;
         font-weight: 400;
         font-size: 11px;
+
+        
     }
   }
 
@@ -110,6 +118,14 @@ export const PostForm = styled.div`
             font-weight: 400;
             font-size: 19px;
             text-transform:capitalize;
+        }
+
+        p{
+          margin:10px 0;
+
+          strong{
+            font-weight: 700;
+          }
         }
     }
 

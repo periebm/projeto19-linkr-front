@@ -41,8 +41,9 @@ export const RightColumn = styled.div`
     overflow:hidden;
 
     img{
-        width:100%;
+        /* width:100%; */
         height:100%;
+        max-width:100%;
 
         object-fit: cover;
         border-top-right-radius: 11px;

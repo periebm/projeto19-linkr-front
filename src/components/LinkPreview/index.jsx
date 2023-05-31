@@ -1,8 +1,7 @@
 import Axios from 'axios';
-import React, { useState, useEffect, useReducer } from 'react';
+import React, { useEffect, useReducer } from 'react';
 import SkeletonLinkPreview from './Skeleton';
 import TYPES from "../../constants/types";
-import Error_505 from "../../assets/error_505.png";
 
 import { Container, LeftColumn, RightColumn, ErrorContainer } from './styles';
 
@@ -19,7 +18,6 @@ const reducer = (state, action) => {
     }
 };
 
-
 const LinkPreview = ({ url }) => {
     const [{ loading, error, link }, dispatch] =
         useReducer(reducer, {
@@ -33,7 +31,8 @@ const LinkPreview = ({ url }) => {
             dispatch({ type: TYPES.FETCH_REQUEST });
             try {
                 const response = await Axios.get(`https://favorited-link-preview.herokuapp.com/api/link-preview?url=${url}`);
-                dispatch({ type: TYPES.FETCH_SUCCESS, payload: response });
+                console.log(response.data)
+                dispatch({ type: TYPES.FETCH_SUCESSS, payload: response.data.result });
             } catch (error) {
                 dispatch({ type: TYPES.FETCH_ERROR, payload: error.message });
             }
