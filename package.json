@@ -5,6 +5,9 @@
   "dependencies": {
     "@dhaiwat10/react-link-preview": "^1.15.0",
     "@fontsource/lato": "^5.0.2",
+    "@fontsource-variable/oswald": "^5.0.2",
+    "@fontsource/lato": "^5.0.2",
+    "@mdnm/react-hashtag": "^3.0.2",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
@@ -14,6 +17,7 @@
     "react-hook-form": "^7.44.2",
     "react-icons": "^4.9.0",
     "react-loading-skeleton": "^3.3.1",
+    "react-loader-spinner": "^5.3.4",
     "react-router-dom": "^6.11.2",
     "react-scripts": "5.0.1",
     "styled-components": "^5.3.11",

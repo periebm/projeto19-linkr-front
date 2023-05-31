@@ -44,9 +44,19 @@ export const RightColumn = styled.div`
         width:100%;
         height:100%;
         max-height:160px;
+        /* width:100%; */
+        height:100%;
+        max-width:100%;
 
         object-fit: cover;
         border-top-right-radius: 11px;
         border-bottom-right-radius: 11px;
     }
+`;
+
+
+export const ErrorContainer = styled.div`
+  text-align:center;
+  color:orange;
+  width:470px;
 `;
