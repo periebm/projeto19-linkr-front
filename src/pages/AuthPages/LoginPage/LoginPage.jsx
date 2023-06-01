@@ -16,7 +16,7 @@ export default function LoginPage() {
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
-      navigate("/auth/home");
+      //navigate("/timeline");
     }
   }, []);
 
@@ -49,7 +49,7 @@ export default function LoginPage() {
         const { token } = res.data;
         localStorage.setItem("token", token);
         console.log("login com sucesso");
-        navigate("/auth/sign-up");
+        navigate("/timeline");
       })
       .catch((err) => {
         setIsLoading(false);
