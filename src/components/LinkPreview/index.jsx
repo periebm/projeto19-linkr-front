@@ -3,6 +3,7 @@ import React, { useEffect, useReducer } from 'react';
 import SkeletonLinkPreview from './Skeleton';
 import TYPES from "../../constants/types";
 import urlMetadata from "url-metadata";
+import NotFound from "../../assets/not_found.jpg";
 
 import { Container, LeftColumn, RightColumn, ErrorContainer } from './styles';
 
@@ -34,7 +35,7 @@ const LinkPreview = ({ url }) => {
             try {
                 const response = await urlMetadata(`https://cors-anywhere-nxl6.onrender.com/${url}`);
                 dispatch({ type: TYPES.FETCH_SUCESSS, payload: response });
-                console.log(response)
+                console.log(response);
             } catch (error) {
                 dispatch({ type: TYPES.FETCH_ERROR, payload: error.message });
             }
@@ -64,7 +65,10 @@ const LinkPreview = ({ url }) => {
                                 <p>{url}</p>
                             </LeftColumn>
                             <RightColumn>
-                                <img src={link && link["og:image"]} alt="" />
+                                <img src={link && link["og:image"]} alt=""
+                                    onError={(e) => {
+                                        e.target.src = NotFound;
+                                    }} />
                             </RightColumn>
                         </Container>
                     )}
