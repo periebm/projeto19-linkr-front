@@ -1,16 +1,13 @@
 import { useEffect, useRef, useState } from "react";
 import { InputContainer, StyledIcon, StyledInput, StyledForm, Dropdown, DropdownRow } from "./styled"
 import { AiOutlineSearch } from 'react-icons/ai';
+import { getUsers } from "../../service/users";
 
 //import { useNavigate } from "react-router-dom";
 
 
 export default function SearchBar() {
-    const array = [
-        { id:1, nome: "Joao Avaters", url: "https://static.wikia.nocookie.net/avatar/images/c/ce/Aang.png/revision/latest?cb=20161129194603&path-prefix=pt-br" },
-        { id:2, nome: "Joao Amongus", url: "https://play-lh.googleusercontent.com/8ddL1kuoNUB5vUvgDVjYY3_6HwQcrg1K2fd_R8soD-e2QYj8fT9cfhfh3G0hnSruLKec" },
-        { id:3, nome: "Carlinhos Carlotes", url: " " },
-        { id:4, nome: "Charles AJIsdjia", url: " " }]
+    let users = [];
 
     const [value, setValue] = useState("");
     const [showSearch, setShowSearch] = useState(false)
@@ -32,14 +29,13 @@ export default function SearchBar() {
       }, []); 
 
 
-    function handleChange(e) {
+    async function handleChange(e) {
         setValue(e.target.value)
+        
+        users = await getUsers();
 
         const newFiltered = filterSearch(e.target.value)
         setFiltered(newFiltered);
-
-
-
 
         if (e.target.value.length >= 3 && newFiltered.length !== 0) {
             setShowSearch(true)
@@ -48,9 +44,9 @@ export default function SearchBar() {
     }
 
     function filterSearch(value) {
-        return(array.filter((u) => {
+        return(users.filter((u) => {
             const searchTerm = value.toLowerCase();
-            const fullName = u.nome.toLowerCase();
+            const fullName = u.username.toLowerCase();
 
             return fullName.includes(searchTerm)
         }))
@@ -64,17 +60,17 @@ export default function SearchBar() {
                     type="text"
                     value={value}
                     minLength={3}
-                    debounceTimeout={1000}
+                    debounceTimeout={300}
                     onChange={handleChange}
-                    onClick={handleChange}
+                    onClick={()=>handleChange}
                     />
                 <StyledIcon> <AiOutlineSearch /></StyledIcon>
                 <Dropdown showSearch={showSearch}>
                     {
                         filterArray.map((u) => (
                             <DropdownRow key={u.id} onClick={()=>console.log(`navigate(/user/${u.id})`)}>
-                                <img src={u.url} alt=""/>
-                                <h3>{u.nome}</h3>
+                                <img src={u.picture_url} alt=""/>
+                                <h3>{u.username}</h3>
                             </DropdownRow>
                         ))
                             .slice(0, 10)
