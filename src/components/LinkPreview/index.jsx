@@ -32,8 +32,9 @@ const LinkPreview = ({ url }) => {
         const fetchUrl = async () => {
             dispatch({ type: TYPES.FETCH_REQUEST });
             try {
-                const response = await urlMetadata(`http://localhost:8080/${url}`);
+                const response = await urlMetadata(`https://cors-anywhere-nxl6.onrender.com/${url}`);
                 dispatch({ type: TYPES.FETCH_SUCESSS, payload: response });
+                console.log(response)
             } catch (error) {
                 dispatch({ type: TYPES.FETCH_ERROR, payload: error.message });
             }
@@ -60,7 +61,7 @@ const LinkPreview = ({ url }) => {
                             <LeftColumn>
                                 <h2>{link && link["og:title"]}</h2>
                                 <p>{link?.description}</p>
-                                <p>{link?.canonical}</p>
+                                <p>{url}</p>
                             </LeftColumn>
                             <RightColumn>
                                 <img src={link && link["og:image"]} alt="" />
