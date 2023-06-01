@@ -10,7 +10,6 @@ export default function App() {
 
   return (
     <Router className="App">
-      <SearchBar/>
       <Routes>
         <Route path="/timeline/hashtag/:hashtag" element={<TrendingPage />} />
         <Route path="/" element={<LoginPage />} />

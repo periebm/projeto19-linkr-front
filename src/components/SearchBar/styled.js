@@ -2,11 +2,13 @@ import styled from "styled-components";
 import {DebounceInput} from 'react-debounce-input';
 
 export const InputContainer = styled.div`
-    background-color: black;
     padding: 10px 0;
-    padding-bottom: 500px;
+    width: 35%;
     h1{
         color: greenyellow;
+    }
+    @media (max-width: 768px) {
+        visibility: hidden;
     }
 `
 
@@ -16,7 +18,7 @@ export const StyledForm = styled.form`
     justify-content: center;
     margin: 0 auto;
     position: relative;
-    width: 50%;
+    width: 100%;
     z-index: 1;
     @media (max-width: 768px) {
         width: 92%;
