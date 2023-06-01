@@ -1,13 +1,13 @@
 import React, { useEffect, useReducer } from 'react';
 import Posts from '../../service/posts';
 import Trendings from '../../service/trendings';
-import { useParams, Link } from "react-router-dom";
-import { IoHeartOutline, IoHeart } from "react-icons/io5";
-import LinkPreview from '../../components/LinkPreview';
+import { useParams } from "react-router-dom";
 import SkeletonTrending from './Skeleton';
-import BoldHashtag from '../../components/BoldHashtags';
+import TrendingCard from '../../components/TrendingCard';
+import { RenderPosts } from '../../components/RenderPosts';
+import Header from '../../components/Header/Header';
 
-import { Container, PostForm, PostsArea, TrendingCard, TrendingCardTitle, MainContent } from './styles';
+import { Container, PostsArea, MainContent } from './styles';
 
 const TYPES = Object.freeze({
     FETCH_REQUEST: 'FETCH_REQUEST',
@@ -35,10 +35,9 @@ const reducer = (state, action) => {
 };
 
 const TrendingPage = () => {
-    const [{ loading, error, posts, trendings }, dispatch] =
+    const [{ loading, error, posts }, dispatch] =
         useReducer(reducer, {
             posts: [],
-            trendings: [],
             loading: false,
             error: ''
         });
@@ -49,7 +48,6 @@ const TrendingPage = () => {
             dispatch({ type: TYPES.FETCH_REQUEST });
             try {
                 const response = await Posts.getPostsByHashtag(hashtag);
-                console.log(response);
                 dispatch({ type: TYPES.FETCH_POSTS, posts: response });
             } catch (error) {
                 dispatch({ type: TYPES.FETCH_ERROR, payload: error.message });
@@ -70,14 +68,9 @@ const TrendingPage = () => {
         fetchTrendings();
     }, [hashtag]);
 
-    const handleTrendingChange = (trending) => {
-        if (trending !== hashtag) {
-            dispatch({ type: TYPES.FETCH_TRENDING_CHANGE });
-        }
-    };
-
     return (
         <Container>
+            <Header />
             <h1># {hashtag.toLowerCase()}</h1>
             <MainContent>
                 <PostsArea>
@@ -85,47 +78,16 @@ const TrendingPage = () => {
                         <SkeletonTrending /> :
                         (
                             posts?.map((post, index) => (
-                                <PostForm key={index}>
-                                    <div>
-                                        <img
-                                            src={post.author.picture}
-                                            alt=""
-                                            onError={(e) => {
-                                                e.target.src = 'https://cdn.onlinewebfonts.com/svg/img_258083.png';
-                                            }} />
-
-                                        {post.user_liked ? <IoHeart /> : <IoHeartOutline />}
-                                        <p>{post.total_likes} likes</p>
-
-                                    </div>
-                                    <div>
-                                        <h4>{post.author.username}</h4>
-                                        <BoldHashtag text={post.description} />
-                                        <LinkPreview url={post.url} />
-                                    </div>
-                                </PostForm>
+                                <RenderPosts
+                                    username={post.author.username}
+                                    description={post.description}
+                                    picture_url={post.author.picture}
+                                    url={post.url}
+                                />
                             ))
                         )}
                 </PostsArea>
-                <TrendingCard>
-                    <TrendingCardTitle>
-                        <h2>trending</h2>
-                    </TrendingCardTitle>
-                    <div>
-                        {trendings?.map((trending) => (
-                            <div key={trending.name}>
-                                <p>
-                                    <Link
-                                        to={`/timeline/hashtag/${trending.name}`}
-                                        onClick={() => handleTrendingChange(trending.name)}
-                                    >
-                                        # {trending.name}
-                                    </Link>
-                                </p>
-                            </div>
-                        ))}
-                    </div>
-                </TrendingCard>
+                <TrendingCard />
             </MainContent>
         </Container>
     );
