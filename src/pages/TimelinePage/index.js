@@ -1,6 +1,7 @@
 import axios from 'axios'
 import { useEffect, useState } from 'react'
 import styled from 'styled-components'
+import Header from '../../components/Header/Header';
 
 export default function TimelinePage() {
     const initialUrl = process.env.REACT_APP_API_URL
@@ -24,6 +25,7 @@ export default function TimelinePage() {
 
     return (
         <TimelinePageContainer>
+            <Header />
             <FeedContainer>
                 <TimelineTitle>timeline</TimelineTitle>
                 <PublishContainer>
