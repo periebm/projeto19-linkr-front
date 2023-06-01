@@ -1,26 +1,66 @@
 import axios from 'axios'
 import { useEffect, useState } from 'react'
 import styled from 'styled-components'
+import jwtDecode from 'jwt-decode';
 import Header from '../../components/Header/Header';
 
 export default function TimelinePage() {
     const initialUrl = process.env.REACT_APP_API_URL
     const url = `http://localhost:5000/posts`;
     const [posts, setPosts] = useState([])
-    const [form, setForm] = useState({})
+    const [form, setForm] = useState({ description: "", url: "", user_id: "" })
+    const [isDisabled, setIsDisabled] = useState(false)
+    const [token, setToken] = useState({})
+    const codedToken = localStorage.getItem('token')
 
     useEffect(() => {
+        fetchPosts();
+        decodeToken()
+        console.log(token)
+      }, []);
+
+    function fetchPosts() {
         axios.get(url)
-            .then((response) => {
-                setPosts(response.data)
-                console.log(response.data)
-            })
-            .catch((error) => console.log('erro', error.response));
-    }, [])
+          .then((response) => {
+            setPosts(response.data);
+            console.log(response.data);
+          })
+          .catch((error) => console.log('Erro ao buscar os posts', error.response));
+      }
+
+      function decodeToken() {
+        try {
+          const decoded = jwtDecode(codedToken);
+          setToken(decoded)
+          console.log(decoded)
+          return decoded;
+        } catch (error) {
+          console.error('Erro ao decodificar o token:', error);
+          return null;
+        }
+      }
 
     function handleChange(event) {
-        setForm({ ...form, [event.target.name]: event.target.value })
+        setForm({ ...form, [event.target.name]: event.target.value, user_id: token.id })
         console.log(form)
+    }
+    function publish(e) {
+        e.preventDefault()
+        const config = {
+            headers: { authorization: `Bearer ${codedToken}` }
+        }
+        const promise = axios.post(url, form, config)
+        setIsDisabled(true)
+        promise.then((a) => {
+            setIsDisabled(false)
+            setForm({ description: "", url: ""});
+            fetchPosts()
+            console.log("objeto login", a.data)
+        })
+        promise.catch((a) => {
+            alert("Houve um erro ao publicar seu link")
+            setIsDisabled(false)
+        })
     }
 
     return (
@@ -30,33 +70,41 @@ export default function TimelinePage() {
                 <TimelineTitle>timeline</TimelineTitle>
                 <PublishContainer>
                     <ProfilePictureContainer>
-                        <ProfilePicture></ProfilePicture>
+                        <ProfilePicture pictureUrl={token.pictureUrl}></ProfilePicture>
                     </ProfilePictureContainer>
                     <PostContentContainer>
                         <ShareToday>What are you going to share today?</ShareToday>
-                        <UrlInput placeholder='http://...'></UrlInput>
-                        <DescriptionInput placeholder='Awesome article about #javascript'></DescriptionInput>
-                        <PublishButtonContainer>
-                            <PublishButton>Publish</PublishButton>
-                        </PublishButtonContainer>
+                        <form onSubmit={publish}>
+                            <UrlInput disabled={isDisabled} type="text" placeholder='http://...' required onChange={handleChange} value={form.url} name={'url'}></UrlInput>
+                            <DescriptionInput disabled={isDisabled} type="text" placeholder='Awesome article about #javascript' onChange={handleChange} value={form.description} name={'description'}></DescriptionInput>
+                            <PublishButtonContainer>
+                                <PublishButton type="submit" disabled={isDisabled}>{isDisabled ? "Publishing..." : "Publish"}</PublishButton>
+                            </PublishButtonContainer>
+                        </form>
+
                     </PostContentContainer>
                 </PublishContainer>
-                {posts.map((post) => {
-                    return (
-                        <RenderPosts
-                            key={post.id}
-                            username={post.username}
-                            picture_url={post.picture_url}
-                            description={post.description}
-                            url={post.url}
-                        />
-                    );
-                })}
+                {posts.length === 0 ? (
+                    <p>There are no posts yet.</p>
+                ) : (
+                    posts.map((post) => {
+                        return (
+                            <RenderPosts
+                                key={post.id}
+                                username={post.username}
+                                picture_url={post.picture_url}
+                                description={post.description}
+                                url={post.url}
+                            />
+                        );
+                    })
+                )}
             </FeedContainer>
 
         </TimelinePageContainer>
     )
 }
+
 
 function RenderPosts(props) {
     const { picture_url, username, description, url } = props
@@ -153,10 +201,12 @@ const ProfilePicture = styled.div`
     width: 50px;
     height: 50px;
     border-radius: 26.5px;
-    background-color:blue;
     margin-top: 16px;
-    background: url(${props => props.pictureUrl});
-`
+    background-color: blue;
+    background-image: url(${props => props.pictureUrl});
+    background-size: cover;
+    background-position: center;
+`;
 const ProfilePictureContainer = styled.div`
     width: 86px;
     height: 209px;
