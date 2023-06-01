@@ -6,7 +6,6 @@ export const Container = styled.div`
   border: 1px solid #4D4D4D;
   border-radius: 11px;
   text-align:left;
-  margin-top:20px;
   max-height:168px;
 
   cursor:pointer;
@@ -16,7 +15,11 @@ export const LeftColumn = styled.div`
     font-family: 'Lato';
     padding:24px 18px;
     align-items:flex-start !important;
-
+    p{
+        padding: 10px 0;
+        font-size: 11px;
+        font-weight: 400;
+    }
     h2{
         font-style: normal;
         font-weight: 400;
