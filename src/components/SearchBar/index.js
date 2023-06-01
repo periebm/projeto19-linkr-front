@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { InputContainer, StyledIcon, StyledInput, StyledForm, Dropdown, DropdownRow } from "./styled"
 import { AiOutlineSearch } from 'react-icons/ai';
+
 //import { useNavigate } from "react-router-dom";
 
 
@@ -33,8 +34,12 @@ export default function SearchBar() {
 
     function handleChange(e) {
         setValue(e.target.value)
+
         const newFiltered = filterSearch(e.target.value)
         setFiltered(newFiltered);
+
+
+
 
         if (e.target.value.length >= 3 && newFiltered.length !== 0) {
             setShowSearch(true)
@@ -58,6 +63,8 @@ export default function SearchBar() {
                     placeholder="Search for people"
                     type="text"
                     value={value}
+                    minLength={3}
+                    debounceTimeout={1000}
                     onChange={handleChange}
                     onClick={handleChange}
                     />

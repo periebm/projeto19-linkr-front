@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import {DebounceInput} from 'react-debounce-input';
 
 export const InputContainer = styled.div`
     background-color: black;
@@ -22,7 +23,7 @@ export const StyledForm = styled.form`
     }
 `
 
-export const StyledInput = styled.input`
+export const StyledInput = styled(DebounceInput)`
     width: 100%;
     height: 45px;
     padding: 10px 16px;
