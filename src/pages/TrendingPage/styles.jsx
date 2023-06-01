@@ -43,7 +43,7 @@ export const TrendingCard = styled.div`
     font-weight: 700;
     font-size:19px;
     padding:0 16px;
-    margin-top:10px;
+    margin-top:15px;
 
   }
 `;

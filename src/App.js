@@ -9,7 +9,7 @@ export default function App() {
   return (
     <Router className="App">
       <Routes>
-        <Route path="/timeline/hashtag/:hashtag" element={<TrendingPage />} />
+        <Route path="/hashtag/:hashtag" element={<TrendingPage />} />
         <Route path="/auth/login" element={<LoginPage />} />
         <Route path="/auth/sign-up" element={<SignUpPage />} />
         <Route path="/timeline" element={<TimelinePage />} />

@@ -40,7 +40,7 @@ const TrendingPage = () => {
             posts: [],
             trendings: [],
             loading: false,
-            error: ''
+            error: null
         });
     const { hashtag } = useParams();
 
@@ -83,29 +83,30 @@ const TrendingPage = () => {
                 <PostsArea>
                     {loading ?
                         <SkeletonTrending /> :
-                        (
-                            posts?.map((post, index) => (
-                                <PostForm key={index}>
-                                    <div>
-                                        <img
-                                            src={post.author.picture}
-                                            alt=""
-                                            onError={(e) => {
-                                                e.target.src = 'https://cdn.onlinewebfonts.com/svg/img_258083.png';
-                                            }} />
+                        error ? <p>An error occured while trying to fetch the posts, please refresh the page</p>
+                            : (
+                                posts?.map((post, index) => (
+                                    <PostForm key={index}>
+                                        <div>
+                                            <img
+                                                src={post.author.picture}
+                                                alt=""
+                                                onError={(e) => {
+                                                    e.target.src = 'https://cdn.onlinewebfonts.com/svg/img_258083.png';
+                                                }} />
 
-                                        {post.user_liked ? <IoHeart /> : <IoHeartOutline />}
-                                        <p>{post.total_likes} likes</p>
+                                            {post.user_liked ? <IoHeart /> : <IoHeartOutline />}
+                                            <p>{post.total_likes} likes</p>
 
-                                    </div>
-                                    <div>
-                                        <h4>{post.author.username}</h4>
-                                        <BoldHashtag text={post.description} />
-                                        <LinkPreview url={post.url} />
-                                    </div>
-                                </PostForm>
-                            ))
-                        )}
+                                        </div>
+                                        <div>
+                                            <h4>{post.author.username}</h4>
+                                            <BoldHashtag text={post.description} />
+                                            <LinkPreview url={post.url} />
+                                        </div>
+                                    </PostForm>
+                                ))
+                            )}
                 </PostsArea>
                 <TrendingCard>
                     <TrendingCardTitle>
@@ -116,7 +117,7 @@ const TrendingPage = () => {
                             <div key={trending.name}>
                                 <p>
                                     <Link
-                                        to={`/timeline/hashtag/${trending.name}`}
+                                        to={`/hashtag/${trending.name}`}
                                         onClick={() => handleTrendingChange(trending.name)}
                                     >
                                         # {trending.name}
