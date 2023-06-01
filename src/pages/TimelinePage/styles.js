@@ -49,6 +49,11 @@ export const DescriptionContainer = styled.p`
     color: #B7B7B7;
     margin-top: 10px;
     margin-bottom:10px;
+
+    strong{
+        font-weight:700;
+        color:#fff;
+    }
 `
 
 export const PublishContainer = styled.div`

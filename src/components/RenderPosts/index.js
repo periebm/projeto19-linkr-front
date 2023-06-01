@@ -1,4 +1,5 @@
 import { DescriptionContainer, PostContainer, PostContentContainer, UrlContainer, UserName } from "../../pages/TimelinePage/styles.js";
+import BoldHashtag from "../BoldHashtags/index.jsx";
 import LinkPreview from "../LinkPreview/index.jsx";
 import { ProfilePicture, ProfilePictureContainer } from "../PublishPost/index.js";
 
@@ -16,7 +17,9 @@ export function RenderPosts(props) {
                 </ProfilePictureContainer>
                 <PostContentContainer>
                     <UserName>{username}</UserName>
-                    <DescriptionContainer>{description}</DescriptionContainer>
+                    <DescriptionContainer>
+                        <BoldHashtag text={description} />
+                    </DescriptionContainer>
                     <UrlContainer>
                         <LinkPreview url={url}></LinkPreview>
                     </UrlContainer>

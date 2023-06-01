@@ -36,6 +36,7 @@ const PublishPost = (props) => {
           fetchPosts();
         })
         .catch((a) => {
+          console.log(a)
           alert("Houve um erro ao publicar seu link");
           setIsDisabled(false);
         });
