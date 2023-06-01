@@ -13,8 +13,8 @@ export default function App() {
       <SearchBar/>
       <Routes>
         <Route path="/timeline/hashtag/:hashtag" element={<TrendingPage />} />
-        <Route path="/auth/login" element={<LoginPage />} />
-        <Route path="/auth/sign-up" element={<SignUpPage />} />
+        <Route path="/" element={<LoginPage />} />
+        <Route path="/sign-up" element={<SignUpPage />} />
         <Route path="/timeline" element={<TimelinePage />} />
       </Routes>
     </Router>
