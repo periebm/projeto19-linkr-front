@@ -1,7 +1,8 @@
-import Axios from 'axios';
+// import Axios from 'axios';
 import React, { useEffect, useReducer } from 'react';
 import SkeletonLinkPreview from './Skeleton';
 import TYPES from "../../constants/types";
+import urlMetadata from "url-metadata";
 
 import { Container, LeftColumn, RightColumn, ErrorContainer } from './styles';
 
@@ -27,12 +28,12 @@ const LinkPreview = ({ url }) => {
         });
 
     useEffect(() => {
+
         const fetchUrl = async () => {
             dispatch({ type: TYPES.FETCH_REQUEST });
             try {
-                const response = await Axios.get(`https://favorited-link-preview.herokuapp.com/api/link-preview?url=${url}`);
-                console.log(response.data);
-                dispatch({ type: TYPES.FETCH_SUCESSS, payload: response.data.result });
+                const response = await urlMetadata(`http://localhost:8080/${url}`);
+                dispatch({ type: TYPES.FETCH_SUCESSS, payload: response });
             } catch (error) {
                 dispatch({ type: TYPES.FETCH_ERROR, payload: error.message });
             }
@@ -57,12 +58,12 @@ const LinkPreview = ({ url }) => {
                     (
                         <Container onClick={() => handleRedirect()}>
                             <LeftColumn>
-                                <h2>{link?.siteData.title}</h2>
-                                <p>{link?.siteData.description}</p>
-                                <p>{link?.siteData.url}</p>
+                                <h2>{link && link["og:title"]}</h2>
+                                <p>{link?.description}</p>
+                                <p>{link?.canonical}</p>
                             </LeftColumn>
                             <RightColumn>
-                                <img src={link?.siteData.image} alt="" />
+                                <img src={link && link["og:image"]} alt="" />
                             </RightColumn>
                         </Container>
                     )}

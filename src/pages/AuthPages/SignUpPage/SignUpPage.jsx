@@ -39,8 +39,12 @@ export default function SignUpPage() {
 
   async function signIn(e) {
     e.preventDefault();
-    setIsLoading(true);
     const { email, password, username, pictureUrl } = inputData;
+    if (!email || !password || !username || !pictureUrl) {
+      alert("Todos os campos precisam ser preenchidos!");
+      return;
+    }
+
     const body = {
       email,
       password,
@@ -48,12 +52,13 @@ export default function SignUpPage() {
       pictureUrl,
     };
 
+    setIsLoading(true);
     axios
       .post(`http://localhost:5000/auth/signup`, body)
       .then((res) => {
         setIsLoading(false);
         console.log("cadastro com sucesso");
-        navigate("/auth/login");
+        navigate("/");
       })
       .catch((err) => {
         setIsLoading(false);
@@ -61,54 +66,44 @@ export default function SignUpPage() {
       });
   }
   return (
-    <LoginPageContainer>
+    <SignInPageContainer>
       <ThumbContainer>
         <div>
           <h1>linkr</h1>
           <h2>save, share and discover the best links on the web</h2>
         </div>
       </ThumbContainer>
-      <LoginContainer>
+      <SignInContainer>
         <FormContainer onSubmit={signIn}>
-          <input
-            onChange={handleChange}
-            name="email"
-            id="email"
-            type="email"
-            placeholder="e-mail"
-            required
-          />
+          <input onChange={handleChange} name="email" id="email" type="text" placeholder="e-mail" />
           <input
             onChange={handleChange}
             name="password"
             id="password"
             type="password"
             placeholder="password"
-            required
           />
           <input
             onChange={handleChange}
             name="username"
             id="username"
-            type="username"
+            type="text"
             placeholder="username"
-            required
           />
           <input
             onChange={handleChange}
             name="pictureUrl"
             id="pictureUrl"
-            type="pictureUrl"
+            type="text"
             placeholder="picture url"
-            required
           />
-          <button type="submit">
+          <button type="submit" disabled={isLoading}>
             {isLoading ? <ProgressBar borderColor="#ffffff" /> : "Sign Up"}
           </button>
         </FormContainer>
-        <Link to="/auth/login">doesn't have an account? click here to register</Link>
-      </LoginContainer>
-    </LoginPageContainer>
+        <Link to="/">Switch back to log in</Link>
+      </SignInContainer>
+    </SignInPageContainer>
   );
 }
 
@@ -235,7 +230,7 @@ const ThumbContainer = styled.div`
   }
 `;
 
-export const LoginContainer = styled.div`
+export const SignInContainer = styled.div`
   display: flex;
   height: 100%;
   flex-direction: column;
@@ -271,7 +266,7 @@ export const LoginContainer = styled.div`
   }
 `;
 
-export const LoginPageContainer = styled.div`
+export const SignInPageContainer = styled.div`
   background-color: #151515;
   width: 100vw;
   height: 100dvh;

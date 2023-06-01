@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { ProgressBar } from "react-loader-spinner";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import Header from "../../../components/Header";
+import Header from "../../../components/Header/Header";
 
 export default function LoginPage() {
   const [inputData, setInputData] = useState({
@@ -35,13 +35,18 @@ export default function LoginPage() {
 
   async function signIn(e) {
     e.preventDefault();
-    setIsLoading(true);
     const { email, password } = inputData;
+    if (!email || !password) {
+      alert("Todos os campos precisam estar preenchidos!");
+      return;
+    }
+
     const body = {
       email,
       password,
     };
 
+    setIsLoading(true);
     axios
       .post(`http://localhost:5000/auth/login`, body)
       .then((res) => {
@@ -72,7 +77,6 @@ export default function LoginPage() {
             id="email"
             type="email"
             placeholder="e-mail"
-            required
           />
           <input
             onChange={handleChange}
@@ -80,13 +84,12 @@ export default function LoginPage() {
             id="password"
             type="password"
             placeholder="password"
-            required
           />
-          <button type="submit">
+          <button type="submit" disabled={isLoading}>
             {isLoading ? <ProgressBar borderColor="#ffffff" /> : "Log In"}
           </button>
         </FormContainer>
-        <Link to="/auth/sign-up">doesn't have an account? click here to register</Link>
+        <Link to="/sign-up">First time? Create an account!</Link>
       </LoginContainer>
     </LoginPageContainer>
   );
