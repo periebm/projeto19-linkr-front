@@ -15,10 +15,9 @@ export default function DialogBox({ showModal, setShowModal, id, setReload }) {
 
         axios.delete(`${URL}/delete/${id}`, config)
             .then((response) => {
-                console.log(response.data);
                 setShowModal(false);
                 setIsLoading(false)
-                setReload(true)
+                setReload(previous => !previous)
             })
             .catch((err) => {
                 alert('Não foi possível excluir o post.')

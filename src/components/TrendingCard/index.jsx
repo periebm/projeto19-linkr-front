@@ -17,7 +17,7 @@ const reducer = (state, action) => {
     }
 };
 
-const TrendingCard = () => {
+const TrendingCard = ({ reload }) => {
     const [{ loading, error, trendings }, dispatch] =
         useReducer(reducer, {
             trendings: [],
@@ -35,9 +35,9 @@ const TrendingCard = () => {
                 dispatch({ type: TYPES.FETCH_ERROR, payload: error.message });
             }
         };
-
+        console.log("reload")
         fetchTrendings();
-    }, []);
+    }, [reload]);
 
     return (
         <Container>

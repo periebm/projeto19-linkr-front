@@ -1,33 +1,52 @@
-import { useState } from "react";
+import { useState, useEffect, useRef, useContext } from "react";
 import { DescriptionContainer, PostContainer, PostContentContainer, UrlContainer, UserName } from "../../pages/TimelinePage/styles.js";
 import LinkPreview from "../LinkPreview/index.jsx";
 import { ProfilePicture, ProfilePictureContainer } from "../PublishPost/index.js";
 import { StyledTrash, StyledPencil, EditInput } from "./styles.js";
 import DialogBox from "../Dialog/index.js";
 import { UserContext } from "../../App.js";
-import { useContext } from "react";
 import Posts from "../../service/posts.js";
 import BoldHashtag from "../BoldHashtags/index.jsx";
 
-export function RenderPosts(props) {
-    const { picture_url, username, description, url, id, setReload, user_id } = props;
+export function RenderPosts({ picture_url, username, description, url, id, setReload, user_id }) {
     const [showModal, setShowModal] = useState(false);
     const [descriptionState, setDescriptionState] = useState(description);
     const [isEditing, setIsEditing] = useState(false);
+    const inputRef = useRef(null);
     const { userInfo } = useContext(UserContext);
 
-    const handleEditClick = async () => {
+    useEffect(() => {
         if (isEditing) {
+            inputRef.current.focus();
+        }
+    }, [isEditing]);
+
+    const handleEditClick = () => {
+        if (isEditing) {
+            setDescriptionState(description);
+        }
+        setIsEditing(!isEditing);
+    };
+
+    const handleSubmitOnKeyDown = async (e) => {
+        if (e.key === 'Escape') {
+            setIsEditing(false);
+            setDescriptionState(description);
+        }
+
+        if (e.key === 'Enter') {
             try {
                 const body = {
                     description: descriptionState
                 };
                 await Posts.updatePost(body, id);
+                setReload(previous => !previous)
+                setIsEditing(false);
             } catch (error) {
-                console.log(error);
+                alert("Não foi possível fazer a edição!");
+                setIsEditing(true);
             }
         }
-        setIsEditing(!isEditing);
     };
 
     return (
@@ -43,7 +62,13 @@ export function RenderPosts(props) {
                 <PostContentContainer>
                     <UserName>{username}</UserName>
                     {isEditing ? (
-                        <EditInput type="text" value={descriptionState} onChange={(e) => setDescriptionState(e.target.value)} />
+                        <EditInput
+                            type="text"
+                            ref={inputRef}
+                            value={descriptionState}
+                            onKeyDown={handleSubmitOnKeyDown}
+                            onChange={(e) => setDescriptionState(e.target.value)}
+                        />
                     ) : (
                         <DescriptionContainer>
                             <BoldHashtag text={descriptionState} />

@@ -2,15 +2,16 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import jwtDecode from 'jwt-decode';
 import Header from '../../components/Header/Header';
-import { FeedContainer, TimelinePageContainer, TimelineTitle } from './styles.js';
+import { FeedContainer, TimelinePageContainer, TimelineTitle, GridContainer, TrendingsContainer } from './styles.js';
 import PublishPost from '../../components/PublishPost/index.js';
 import { RenderPosts } from '../../components/RenderPosts/index.js';
 import { useNavigate } from 'react-router-dom';
+import TrendingCard from '../../components/TrendingCard';
 
 export default function TimelinePage() {
     const initialUrl = process.env.REACT_APP_API_URL;
     const url = `${initialUrl}/posts`;
-    const [reloadPage, setReload] = useState(false)
+    const [reloadPage, setReload] = useState(false);
     const [posts, setPosts] = useState([]);
     const [token, setToken] = useState({});
     const codedToken = JSON.parse(localStorage.getItem('userInfo'));
@@ -21,7 +22,7 @@ export default function TimelinePage() {
             navigate("/");
         }
         fetchPosts();
-        decodeToken()
+        decodeToken();
     }, [reloadPage]);
 
 
@@ -50,29 +51,44 @@ export default function TimelinePage() {
             <Header />
             <FeedContainer>
                 <TimelineTitle>timeline</TimelineTitle>
-                <PublishPost setPosts={setPosts} posts={posts} token={token} setToken={setToken}></PublishPost>
+                <GridContainer>
+                    <div>
+                        <PublishPost
+                            setPosts={setPosts}
+                            posts={posts}
+                            token={token}
+                            setToken={setToken}
+                            setReload={setReload}
+                        >
+                        </PublishPost>
 
-                {posts.length === 0 ? (
-                    <p>There are no posts yet.</p>
-                ) : (
-                    posts.map((post) => {
-                        return (
-                            <RenderPosts
-                                key={post.id}
-                                username={post.username}
-                                picture_url={post.picture_url}
-                                description={post.description}
-                                url={post.url}
-                                id={post.id}
-                                user_id={post.user_id}
-                                setReload={setReload}
-                            />
-                        );
-                    })
-                )}
+                        {posts.length === 0 ? (
+                            <p>There are no posts yet.</p>
+                        ) : (
+                            posts.map((post) => {
+                                return (
+                                    <RenderPosts
+                                        key={post.id}
+                                        username={post.username}
+                                        picture_url={post.picture_url}
+                                        description={post.description}
+                                        url={post.url}
+                                        id={post.id}
+                                        user_id={post.user_id}
+                                        setReload={setReload}
+                                    />
+                                );
+                            })
+                        )}
+                    </div>
+                    <TrendingsContainer>
+                        <TrendingCard reload={reloadPage} />
+                    </TrendingsContainer>
+                </GridContainer>
+
             </FeedContainer>
 
-        </TimelinePageContainer>
+        </TimelinePageContainer >
     );
 }
 
