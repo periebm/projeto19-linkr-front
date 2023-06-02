@@ -7,6 +7,18 @@ const axiosInstance = axios.create({
     }
 });
 
+axiosInstance.interceptors.request.use(async config => {
+    try {
+        const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+        if (userInfo) {
+            config.headers['Authorization'] = `Bearer ${userInfo.token}`;
+        }
+        return config;
+    } catch (error) {
+        return Promise.reject(error);
+    }
+});
+
 const methods = [
     'get',
     'post',
@@ -27,7 +39,7 @@ for (const method of methods) {
 
         try {
             const response = await axiosInstance({ method, url, data: body });
-            return fullResponse ? response : response.data
+            return fullResponse ? response : response.data;
         } catch (error) {
             Promise.reject(error);
             throw new Error(error.message);
@@ -35,4 +47,4 @@ for (const method of methods) {
     };
 }
 
-export default axiosEndpoints
+export default axiosEndpoints;
