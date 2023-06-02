@@ -13,12 +13,12 @@ export default function TimelinePage() {
     const [form, setForm] = useState({ description: "", url: "", user_id: "" })
     const [token, setToken] = useState({})
     const codedToken = localStorage.getItem('token')
-
+    const [reloadPage, setReload] = useState(false)
     useEffect(() => {
         fetchPosts();
         decodeToken()
-        console.log("posts", posts)
-    }, []);
+        //console.log("posts", posts)
+    }, [reloadPage]);
 
     function fetchPosts() {
         axios.get(url)
@@ -58,6 +58,8 @@ export default function TimelinePage() {
                                 picture_url={post.picture_url}
                                 description={post.description}
                                 url={post.url}
+                                id={post.id}
+                                setReload={setReload}
                             />
                         );
                     })

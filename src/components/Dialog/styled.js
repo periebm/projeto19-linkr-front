@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import ReactModal from "react-modal";
+import { ProgressBar } from "react-loader-spinner";
 
 
 export const DialogContainer = styled.div`
@@ -71,5 +72,6 @@ export const Button = styled.button`
             padding: 8px 10px;
             font-size: 15px;
         }
-
+`
+export const StyledProgressBarContainer = styled.span`
 `
