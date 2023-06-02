@@ -16,7 +16,7 @@ export default function SignUpPage() {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem("userInfo");
     if (token) {
       navigate("/timeline");
     }
