@@ -79,21 +79,6 @@ export const PostContainer = styled.div`
     padding-left:0px;
 `;
 
-export const ProfilePicture = styled.div`
-    width: 50px;
-    height: 50px;
-    border-radius: 26.5px;
-    background-color: blue;
-    background-image: url(${props => props.pictureUrl});
-    background-size: cover;
-    background-position: center;
-`;
-export const ProfilePictureContainer = styled.div`
-    width: 86px;
-    height: 209px;
-    display:flex;
-    justify-content: center;
-`
 
 export const PostContentContainer = styled.div`
     width: 503px;
