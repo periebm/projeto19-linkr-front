@@ -1,7 +1,8 @@
-import styled, { css, keyframes } from "styled-components";
+import styled from "styled-components";
 import arrowImg from "../../assets/icons/arrow.svg";
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import SearchBar from "../SearchBar";
 
 export default function Header(props) {
   const { profileUrl } = props;
@@ -32,13 +33,14 @@ export default function Header(props) {
   }, []);
 
   function logout() {
-    localStorage.removeItem("token");
+    localStorage.removeItem("userInfo");
     navigate("/");
   }
 
   return (
     <HeaderContainer>
       <Logo>linkr</Logo>
+      <SearchBar/>
       <MenuContainer ref={menuRef}>
         <ArrowImg src={arrowImg} alt="" onClick={handleArrowClick} isMenuOpen={isMenuOpen} />
         <AvatarImg
@@ -57,13 +59,13 @@ export default function Header(props) {
 const LogoutButton = styled.button`
   z-index: -5;
   position: absolute;
-  top: ${({ isMenuOpen }) => (isMenuOpen ? "6vh" : "0")};
+  top: ${({ isMenuOpen }) => (isMenuOpen ? "60px" : "0")};
   transition: top 0.3s ease-in-out;
   right: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 6vw;
+  width: 140px;
   min-width: 100px;
   border: none;
   cursor: pointer;
@@ -99,9 +101,10 @@ const MenuContainer = styled.div`
   align-items: center;
   justify-content: flex-end;
   width: 5vw;
-  min-width: 100px;
+  min-width: 130px;
   gap: 15px;
   background-color: #151515;
+  padding-right: 30px;
 `;
 
 const Logo = styled.h2`
@@ -116,15 +119,14 @@ const Logo = styled.h2`
 
 const HeaderContainer = styled.div`
   z-index: 4;
-  padding-left: 0.5%;
-  padding-right: 0.5%;
+  padding-left: 30px;
   position: fixed;
   top: 0;
   left: 0;
   z-index: 10;
   background-color: #151515;
   width: 100vw;
-  height: 6vh;
+  height: 60px;
   display: flex;
   align-items: center;
   justify-content: space-between;

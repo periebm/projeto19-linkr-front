@@ -1,5 +1,5 @@
-import axios from 'axios'
-import { useEffect, useState } from 'react'
+import axios from 'axios';
+import { useEffect, useState } from 'react';
 import jwtDecode from 'jwt-decode';
 import Header from '../../components/Header/Header';
 import { FeedContainer, TimelinePageContainer, TimelineTitle } from './styles.js';
@@ -8,11 +8,12 @@ import { RenderPosts } from '../../components/RenderPosts/index.js';
 import { useNavigate } from 'react-router-dom';
 
 export default function TimelinePage() {
-    const initialUrl = process.env.REACT_APP_API_URL
+    const initialUrl = process.env.REACT_APP_API_URL;
     const url = `${initialUrl}/posts`;
-    const [posts, setPosts] = useState([])
-    const [token, setToken] = useState({})
-    const codedToken = localStorage.getItem('token')
+    const [reloadPage, setReload] = useState(false)
+    const [posts, setPosts] = useState([]);
+    const [token, setToken] = useState({});
+    const codedToken = JSON.parse(localStorage.getItem('userInfo'));
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -21,7 +22,8 @@ export default function TimelinePage() {
         }
         fetchPosts();
         decodeToken()
-    }, []);
+    }, [reloadPage]);
+
 
     function fetchPosts() {
         axios.get(url)
@@ -33,8 +35,8 @@ export default function TimelinePage() {
 
     function decodeToken() {
         try {
-            const decoded = jwtDecode(codedToken);
-            setToken(decoded)
+            const decoded = jwtDecode(codedToken.token);
+            setToken(decoded);
             return decoded;
         } catch (error) {
             console.error('Erro ao decodificar o token:', error);
@@ -61,6 +63,9 @@ export default function TimelinePage() {
                                 picture_url={post.author.picture}
                                 description={post.description}
                                 url={post.url}
+                                id={post.id}
+                                user_id={post.user_id}
+                                setReload={setReload}
                             />
                         );
                     })
@@ -68,7 +73,7 @@ export default function TimelinePage() {
             </FeedContainer>
 
         </TimelinePageContainer>
-    )
+    );
 }
 
 

@@ -1,4 +1,5 @@
 import axios from "axios";
+import { useEffect } from "react";
 import { useState } from "react";
 import { ProgressBar } from "react-loader-spinner";
 import { Link, useNavigate } from "react-router-dom";
@@ -13,6 +14,13 @@ export default function SignUpPage() {
   });
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    const token = localStorage.getItem("userInfo");
+    if (token) {
+      navigate("/timeline");
+    }
+  }, []);
 
   function handleChange(e) {
     if (e.target.name === "email") {

@@ -90,13 +90,13 @@ export const ProfilePictureContainer = styled.div`
     justify-content: center;
 `
 
-
-
 export const PostContentContainer = styled.div`
     width: 503px;
     display:flex;
     flex-direction: column;
+    position: relative;
 `
+
 export const ShareToday = styled.div`
     font-family: 'Lato';
     font-style: normal;
