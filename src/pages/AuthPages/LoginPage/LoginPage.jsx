@@ -17,7 +17,7 @@ export default function LoginPage() {
   const { setUserToken } = useContext(UserContext);
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem("userInfo");
     if (token) {
       navigate("/timeline");
     }
@@ -54,9 +54,9 @@ export default function LoginPage() {
       .post(`http://localhost:5000/auth/login`, body)
       .then((res) => {
         setIsLoading(false);
-        const { token } = res.data;
-        localStorage.setItem("token", token);
-        setUserToken(token);
+        const userInfo = res.data;
+        localStorage.setItem("userInfo", JSON.stringify(userInfo));
+        setUserToken(userInfo.token);
         console.log("login com sucesso");
         navigate("/timeline");
       })
