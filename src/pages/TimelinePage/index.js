@@ -57,8 +57,8 @@ export default function TimelinePage() {
                         return (
                             <RenderPosts
                                 key={post.id}
-                                username={post.username}
-                                picture_url={post.picture_url}
+                                username={post.author.username}
+                                picture_url={post.author.picture}
                                 description={post.description}
                                 url={post.url}
                             />
