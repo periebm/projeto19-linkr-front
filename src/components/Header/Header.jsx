@@ -3,10 +3,11 @@ import arrowImg from "../../assets/icons/arrow.svg";
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import SearchBar from "../SearchBar";
+import jwtDecode from "jwt-decode";
 
 export default function Header(props) {
-  const { profileUrl } = props;
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [pictureUrl, setPictureUrl] = useState("");
   const menuRef = useRef(null);
   const buttonRef = useRef(null);
   const navigate = useNavigate();
@@ -15,6 +16,11 @@ export default function Header(props) {
   };
 
   useEffect(() => {
+    const userInfo = localStorage.getItem("userInfo");
+    if (userInfo) {
+      setPictureUrl(JSON.parse(userInfo).pictureUrl);
+    }
+
     const handleOutsideClick = (event) => {
       if (
         menuRef.current &&
@@ -40,14 +46,10 @@ export default function Header(props) {
   return (
     <HeaderContainer>
       <Logo>linkr</Logo>
-      <SearchBar/>
+      <SearchBar />
       <MenuContainer ref={menuRef}>
         <ArrowImg src={arrowImg} alt="" onClick={handleArrowClick} isMenuOpen={isMenuOpen} />
-        <AvatarImg
-          src={profileUrl}
-          alt=""
-          onClick={handleArrowClick}
-        />
+        <AvatarImg src={pictureUrl} alt="" onClick={handleArrowClick} />
       </MenuContainer>
       <LogoutButton onClick={logout} isMenuOpen={isMenuOpen} ref={buttonRef}>
         Logout
