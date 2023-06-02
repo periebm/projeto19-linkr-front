@@ -38,7 +38,6 @@ export const EditInput = styled.input`
   border-radius:7px;
   border:0;
 `;
-`
 
 export const LikeContainer = styled.div`
     min-width: 50px;
