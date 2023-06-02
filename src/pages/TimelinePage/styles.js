@@ -18,7 +18,7 @@ export const TimelineTitle = styled.div`
     font-size: 43px;
     line-height: 64px;
     color: #FFFFFF;
-    margin-top: 150px;
+    margin-top: 73px;
 `
 
 export const TimelinePageContainer = styled.div`

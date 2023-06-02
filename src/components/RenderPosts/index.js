@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { DescriptionContainer, PostContainer, PostContentContainer, UrlContainer, UserName } from "../../pages/TimelinePage/styles.js";
 import LinkPreview from "../LinkPreview/index.jsx";
 import { ProfilePicture, ProfilePictureContainer } from "../PublishPost/index.js";
@@ -7,9 +7,9 @@ import DialogBox from "../Dialog/index.js";
 
 
 export function RenderPosts(props) {
-    const { picture_url, username, description, url, id, setReload } = props;
+    const { picture_url, username, description, url, id, setReload, user_id } = props;
     const [showModal, setShowModal] = useState(false)
-
+    
     return (
         <>
             <PostContainer>
@@ -33,7 +33,8 @@ export function RenderPosts(props) {
                 showModal={showModal}
                 setShowModal={setShowModal}
                 id={id}
-                setReload={setReload} />
+                setReload={setReload}
+                user_id={user_id} />
         </>
     );
 }

@@ -5,20 +5,26 @@ import Header from '../../components/Header/Header';
 import { FeedContainer, TimelinePageContainer, TimelineTitle } from './styles.js';
 import PublishPost from '../../components/PublishPost/index.js';
 import { RenderPosts } from '../../components/RenderPosts/index.js';
+import { useNavigate } from 'react-router-dom';
 
 export default function TimelinePage() {
     const initialUrl = process.env.REACT_APP_API_URL
-    const url = `http://localhost:5000/posts`;
+    const url = `${initialUrl}/posts`;
     const [posts, setPosts] = useState([])
-    const [form, setForm] = useState({ description: "", url: "", user_id: "" })
     const [token, setToken] = useState({})
     const codedToken = localStorage.getItem('token')
+
     const [reloadPage, setReload] = useState(false)
+    const navigate = useNavigate();
+
     useEffect(() => {
+        if (!codedToken) {
+            navigate("/");
+        }
         fetchPosts();
         decodeToken()
-        //console.log("posts", posts)
     }, [reloadPage]);
+
 
     function fetchPosts() {
         axios.get(url)
@@ -32,7 +38,6 @@ export default function TimelinePage() {
         try {
             const decoded = jwtDecode(codedToken);
             setToken(decoded)
-            console.log(decoded)
             return decoded;
         } catch (error) {
             console.error('Erro ao decodificar o token:', error);
@@ -60,6 +65,7 @@ export default function TimelinePage() {
                                 description={post.description}
                                 url={post.url}
                                 id={post.id}
+                                user_id = {post.user_id}
                                 setReload={setReload}
                             />
                         );
