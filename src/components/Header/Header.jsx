@@ -1,4 +1,4 @@
-import styled, { css, keyframes } from "styled-components";
+import styled from "styled-components";
 import arrowImg from "../../assets/icons/arrow.svg";
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -33,7 +33,7 @@ export default function Header(props) {
   }, []);
 
   function logout() {
-    localStorage.removeItem("token");
+    localStorage.removeItem("userInfo");
     navigate("/");
   }
 

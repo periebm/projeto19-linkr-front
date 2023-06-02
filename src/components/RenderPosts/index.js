@@ -4,12 +4,15 @@ import LinkPreview from "../LinkPreview/index.jsx";
 import { ProfilePicture, ProfilePictureContainer } from "../PublishPost/index.js";
 import { StyledTrash } from "./styles.js";
 import DialogBox from "../Dialog/index.js";
+import { UserContext } from "../../App.js";
+import { useContext } from "react";
 
 
 export function RenderPosts(props) {
     const { picture_url, username, description, url, id, setReload, user_id } = props;
     const [showModal, setShowModal] = useState(false)
-    
+    const { userInfo, setUserInfo } = useContext(UserContext)
+
     return (
         <>
             <PostContainer>
@@ -26,7 +29,7 @@ export function RenderPosts(props) {
                     <UrlContainer>
                         <LinkPreview url={url}></LinkPreview>
                     </UrlContainer>
-                    <StyledTrash onClick={() => setShowModal(true)} />
+                    { (userInfo.id) == (user_id) && <StyledTrash onClick={() => setShowModal(true)} />}
                 </PostContentContainer>
             </PostContainer>
             <DialogBox

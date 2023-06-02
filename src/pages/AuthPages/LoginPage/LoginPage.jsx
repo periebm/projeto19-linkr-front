@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import { ProgressBar } from "react-loader-spinner";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import Header from "../../../components/Header/Header";
 import { useContext } from "react";
 import { UserContext } from "../../../App";
 
@@ -14,10 +13,10 @@ export default function LoginPage() {
   });
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
-  const { setUserToken } = useContext(UserContext);
+  const { setUserInfo } = useContext(UserContext);
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem("userInfo");
     if (token) {
       navigate("/timeline");
     }
@@ -54,15 +53,15 @@ export default function LoginPage() {
       .post(`http://localhost:5000/auth/login`, body)
       .then((res) => {
         setIsLoading(false);
-        const { token } = res.data;
-        localStorage.setItem("token", token);
-        setUserToken(token);
+        const userInfo = res.data;
+        localStorage.setItem("userInfo", JSON.stringify(userInfo));
+        setUserInfo(userInfo.token);
         console.log("login com sucesso");
         navigate("/timeline");
       })
       .catch((err) => {
         setIsLoading(false);
-        alert(err.response.data);
+        console.log(err);
       });
   }
   return (
