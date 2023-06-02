@@ -15,7 +15,7 @@ export const Container = styled.div`
     font-family:"Oswald Variable", sans-serif;
     font-weight: 700;
     font-size: 43px;
-    margin:50px 0 41px;
+    margin:85px 0 41px;
   }
 `;
 

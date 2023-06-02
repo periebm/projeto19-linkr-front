@@ -3,7 +3,7 @@ import styled from 'styled-components';
 export const Container = styled.div`
   background-color:#171717;
   width:301px;
-  max-height:406px;
+  height:406px;
   color:white;
   border-radius: 16px;
   font-family:"lato", sans-serif;
