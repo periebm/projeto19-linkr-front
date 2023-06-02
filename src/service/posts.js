@@ -9,7 +9,12 @@ const getPostsByHashtag = (hashtag) => {
     return api.get(`/posts/${hashtag}`);
 };
 
+const updatePost = (body, id) => {
+    return api.put(`/posts/update/${id}`, body)
+}
+
 export default {
     getPosts,
-    getPostsByHashtag
+    getPostsByHashtag,
+    updatePost
 };
