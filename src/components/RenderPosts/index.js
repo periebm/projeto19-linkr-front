@@ -1,18 +1,36 @@
 import { useState, useEffect, useRef, useContext } from "react";
 import { DescriptionContainer, PostContainer, PostContentContainer, UrlContainer, UserName } from "../../pages/TimelinePage/styles.js";
 import LinkPreview from "../LinkPreview/index.jsx";
-import { ProfilePicture, ProfilePictureContainer } from "../PublishPost/index.js";
-import { StyledTrash, StyledPencil, EditInput } from "./styles.js";
+import { FilledHeart, HeartOutline, LikeContainer, ProfilePicture, ProfilePictureContainer, StyledTrash, StyledPencil, EditInput } from "./styles.js";
 import DialogBox from "../Dialog/index.js";
 import { UserContext } from "../../App.js";
 import Posts from "../../service/posts.js";
 import BoldHashtag from "../BoldHashtags/index.jsx";
+import axios from "axios";
 
-export function RenderPosts({ picture_url, username, description, url, id, setReload, user_id }) {
+
+export function RenderPosts({ 
+    picture_url, 
+    username, 
+    description, 
+    url, 
+    id, 
+    setReload, 
+    user_id, 
+    user_liked, 
+    total_likes, 
+    liked_users, 
+    reloadPage, 
+    tokenJson, 
+    token 
+}) {
     const [showModal, setShowModal] = useState(false);
     const [descriptionState, setDescriptionState] = useState(description);
     const [isEditing, setIsEditing] = useState(false);
     const inputRef = useRef(null);
+    const [isLiked, setIsLiked] = useState(user_liked)
+    const [isDisabled, setIsDisabled] = useState(false);
+    const axiosUrl = `${process.env.REACT_APP_API_URL}/like`
     const { userInfo } = useContext(UserContext);
 
     useEffect(() => {
@@ -49,6 +67,47 @@ export function RenderPosts({ picture_url, username, description, url, id, setRe
         }
     };
 
+    function likePost() {
+        const config = {
+            headers: { authorization: `Bearer ${token.token}` }
+        };
+        const body = {
+            user_id: tokenJson.id,
+            post_id: id
+        }
+        setIsDisabled(true)
+        if (isLiked) {
+            const promise = axios.delete(axiosUrl, {
+                headers: { authorization: `Bearer ${token.token}` },
+                data: body
+            });
+            promise
+                .then(() => {
+                    setIsDisabled(false)
+                    setIsLiked(false)
+                    setReload(!reloadPage)
+                })
+                .catch((a) => {
+                    console.log("erro", a)
+                    setIsDisabled(false)
+                });
+
+        }
+        else {
+            const promise = axios.post(axiosUrl, body, config)
+            promise
+                .then(() => {
+                    setIsDisabled(false)
+                    setIsLiked(true)
+                    setReload(!reloadPage)
+                })
+                .catch((a) => {
+                    console.log("erro", a.response.data)
+                    setIsDisabled(false)
+                });
+        }
+    }
+
     return (
         <>
             <PostContainer>
@@ -58,6 +117,11 @@ export function RenderPosts({ picture_url, username, description, url, id, setRe
                         onError={(e) => {
                             e.target.src = 'https://cdn.onlinewebfonts.com/svg/img_258083.png';
                         }}></ProfilePicture>
+                    <LikeContainer>
+                        <button disabled={isDisabled} onClick={likePost}>{isLiked ? <FilledHeart></FilledHeart>
+                            : <HeartOutline></HeartOutline>}</button>
+                        <p>{total_likes} {total_likes === 1 ? 'like' : 'likes'}</p>
+                    </LikeContainer>
                 </ProfilePictureContainer>
                 <PostContentContainer>
                     <UserName>{username}</UserName>
@@ -90,3 +154,4 @@ export function RenderPosts({ picture_url, username, description, url, id, setRe
         </>
     );
 }
+

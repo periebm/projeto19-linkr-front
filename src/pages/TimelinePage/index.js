@@ -10,11 +10,11 @@ import TrendingCard from '../../components/TrendingCard';
 
 export default function TimelinePage() {
     const initialUrl = process.env.REACT_APP_API_URL;
-    const url = `${initialUrl}/posts`;
     const [reloadPage, setReload] = useState(false);
     const [posts, setPosts] = useState([]);
     const [token, setToken] = useState({});
     const codedToken = JSON.parse(localStorage.getItem('userInfo'));
+    const url = `${initialUrl}/posts`;
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -27,7 +27,10 @@ export default function TimelinePage() {
 
 
     function fetchPosts() {
-        axios.get(url)
+        const config = {
+            headers: { authorization: `Bearer ${codedToken.token}` }
+        };
+        axios.get(url, config)
             .then((response) => {
                 setPosts(response.data);
             })
@@ -68,14 +71,20 @@ export default function TimelinePage() {
                             posts.map((post) => {
                                 return (
                                     <RenderPosts
+                                        tokenJson={token}
+                                        token={codedToken}
                                         key={post.id}
-                                        username={post.username}
-                                        picture_url={post.picture_url}
+                                        username={post.author.username}
+                                        picture_url={post.author.picture}
                                         description={post.description}
                                         url={post.url}
+                                        user_liked={post.user_liked}
+                                        total_likes={post.total_likes}
+                                        liked_users={post.liked_users}
                                         id={post.id}
                                         user_id={post.user_id}
                                         setReload={setReload}
+                                        reloadPage={reloadPage}
                                     />
                                 );
                             })
