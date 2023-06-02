@@ -8,6 +8,7 @@ import { UserContext } from "../../App.js";
 import { useContext } from "react";
 import Posts from "../../service/posts.js";
 import BoldHashtag from "../BoldHashtags/index.jsx";
+import { Navigate, useNavigate } from "react-router-dom";
 
 export function RenderPosts(props) {
     const { picture_url, username, description, url, id, setReload, user_id } = props;
@@ -15,6 +16,7 @@ export function RenderPosts(props) {
     const [descriptionState, setDescriptionState] = useState(description);
     const [isEditing, setIsEditing] = useState(false);
     const { userInfo } = useContext(UserContext);
+    const navigate = useNavigate();
 
     const handleEditClick = async () => {
         if (isEditing) {
@@ -41,7 +43,7 @@ export function RenderPosts(props) {
                         }}></ProfilePicture>
                 </ProfilePictureContainer>
                 <PostContentContainer>
-                    <UserName>{username}</UserName>
+                    <UserName onClick={()=> console.log(user_id)}>{username}</UserName>
                     {isEditing ? (
                         <EditInput type="text" value={descriptionState} onChange={(e) => setDescriptionState(e.target.value)} />
                     ) : (

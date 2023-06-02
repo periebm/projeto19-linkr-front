@@ -6,7 +6,7 @@ import { ProgressBar } from "react-loader-spinner";
 
 export default function DialogBox({ showModal, setShowModal, id, setReload }) {
     const [isLoading, setIsLoading] = useState(false);
-    const URL = "http://localhost:5000"
+    const URL = process.env.REACT_APP_API_URL
     function DeletePost() {
         setIsLoading(true)
         const config = {
