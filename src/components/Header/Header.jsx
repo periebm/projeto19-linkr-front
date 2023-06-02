@@ -2,6 +2,7 @@ import styled from "styled-components";
 import arrowImg from "../../assets/icons/arrow.svg";
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import SearchBar from "../SearchBar";
 
 export default function Header(props) {
   const { profileUrl } = props;
@@ -39,6 +40,7 @@ export default function Header(props) {
   return (
     <HeaderContainer>
       <Logo>linkr</Logo>
+      <SearchBar/>
       <MenuContainer ref={menuRef}>
         <ArrowImg src={arrowImg} alt="" onClick={handleArrowClick} isMenuOpen={isMenuOpen} />
         <AvatarImg

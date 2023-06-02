@@ -4,6 +4,7 @@ import TimelinePage from "./pages/TimelinePage/index.js";
 import TrendingPage from "./pages/TrendingPage";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import "./App.css";
+import SearchBar from "./components/SearchBar";
 import { useEffect } from "react";
 import { createContext } from "react";
 import { useState } from "react";
@@ -29,5 +30,6 @@ export default function App() {
         </Routes>
       </UserContext.Provider>
     </Router>
+
   );
 }

@@ -10,6 +10,7 @@ import { useNavigate } from 'react-router-dom';
 export default function TimelinePage() {
     const initialUrl = process.env.REACT_APP_API_URL;
     const url = `${initialUrl}/posts`;
+    const [reloadPage, setReload] = useState(false)
     const [posts, setPosts] = useState([]);
     const [token, setToken] = useState({});
     const codedToken = JSON.parse(localStorage.getItem('userInfo'));
@@ -20,8 +21,9 @@ export default function TimelinePage() {
             navigate("/");
         }
         fetchPosts();
-        decodeToken();
-    }, []);
+        decodeToken()
+    }, [reloadPage]);
+
 
     function fetchPosts() {
         axios.get(url)
@@ -61,6 +63,9 @@ export default function TimelinePage() {
                                 picture_url={post.picture_url}
                                 description={post.description}
                                 url={post.url}
+                                id={post.id}
+                                user_id={post.user_id}
+                                setReload={setReload}
                             />
                         );
                     })
