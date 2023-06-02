@@ -4,6 +4,8 @@ import { ProgressBar } from "react-loader-spinner";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Header from "../../../components/Header/Header";
+import { useContext } from "react";
+import { UserContext } from "../../../App";
 
 export default function LoginPage() {
   const [inputData, setInputData] = useState({
@@ -12,11 +14,12 @@ export default function LoginPage() {
   });
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
+  const { setUserToken } = useContext(UserContext);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
-      //navigate("/timeline");
+      navigate("/timeline");
     }
   }, []);
 
@@ -53,6 +56,7 @@ export default function LoginPage() {
         setIsLoading(false);
         const { token } = res.data;
         localStorage.setItem("token", token);
+        setUserToken(token);
         console.log("login com sucesso");
         navigate("/timeline");
       })

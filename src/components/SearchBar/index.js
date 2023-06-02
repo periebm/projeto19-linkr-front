@@ -17,34 +17,35 @@ export default function SearchBar() {
 
     useEffect(() => { //Funcao p/ fechar dropdown quando clicar fora do input
         const handleClickOutside = (event) => {
-          if (searchInputRef.current && !searchInputRef.current.contains(event.target)) {
-            setShowSearch(false);
-          }
+            if (searchInputRef.current && !searchInputRef.current.contains(event.target)) {
+                setShowSearch(false);
+            }
         };
-    
-        document.addEventListener('mousedown', handleClickOutside);   
+
+        document.addEventListener('mousedown', handleClickOutside);
         return () => {
-          document.removeEventListener('mousedown', handleClickOutside);
+            document.removeEventListener('mousedown', handleClickOutside);
         };
-      }, []); 
+    }, []);
 
 
     async function handleChange(e) {
         setValue(e.target.value)
-        
-        users = await getUsers();
+        if (e.target.value.length >= 3) {
+            users = await getUsers();
 
-        const newFiltered = filterSearch(e.target.value)
-        setFiltered(newFiltered);
+            const newFiltered = filterSearch(e.target.value)
+            setFiltered(newFiltered);
 
-        if (e.target.value.length >= 3 && newFiltered.length !== 0) {
-            setShowSearch(true)
+            if (newFiltered.length !== 0) {
+                setShowSearch(true)
+            }
         }
         else { setShowSearch(false) }
     }
 
     function filterSearch(value) {
-        return(users.filter((u) => {
+        return (users.filter((u) => {
             const searchTerm = value.toLowerCase();
             const fullName = u.username.toLowerCase();
 
@@ -59,17 +60,17 @@ export default function SearchBar() {
                     placeholder="Search for people"
                     type="text"
                     value={value}
-                    minLength={3}
+                    minLength={1}
                     debounceTimeout={300}
                     onChange={handleChange}
-                    onClick={()=>handleChange}
-                    />
+                    onClick={() => handleChange}
+                />
                 <StyledIcon> <AiOutlineSearch /></StyledIcon>
                 <Dropdown showSearch={showSearch}>
                     {
                         filterArray.map((u) => (
-                            <DropdownRow key={u.id} onClick={()=>console.log(`navigate(/user/${u.id})`)}>
-                                <img src={u.picture_url} alt=""/>
+                            <DropdownRow key={u.id} onClick={() => console.log(`navigate(/user/${u.id})`)}>
+                                <img src={u.picture_url} alt="" />
                                 <h3>{u.username}</h3>
                             </DropdownRow>
                         ))

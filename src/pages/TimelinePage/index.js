@@ -32,6 +32,7 @@ export default function TimelinePage() {
         try {
             const decoded = jwtDecode(codedToken);
             setToken(decoded)
+            console.log(decoded)
             return decoded;
         } catch (error) {
             console.error('Erro ao decodificar o token:', error);
