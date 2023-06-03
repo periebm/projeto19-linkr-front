@@ -56,7 +56,6 @@ export default function LoginPage() {
         const userInfo = res.data;
         localStorage.setItem("userInfo", JSON.stringify(userInfo));
         setUserInfo(userInfo.token);
-        console.log("login com sucesso");
         navigate("/timeline");
       })
       .catch((err) => {

@@ -89,7 +89,7 @@ export function RenderPosts({
                 .then(() => {
                     setIsDisabled(false)
                     setIsLiked(false)
-                    setReload(!reloadPage)
+                    setReload(previous => !previous)
                 })
                 .catch((a) => {
                     console.log("erro", a)
@@ -103,10 +103,10 @@ export function RenderPosts({
                 .then(() => {
                     setIsDisabled(false)
                     setIsLiked(true)
-                    setReload(!reloadPage)
+                    setReload(previous => !previous)
                 })
                 .catch((a) => {
-                    console.log("erro", a.response.data)
+                    console.log("erro", a.response?.data)
                     setIsDisabled(false)
                 });
         }

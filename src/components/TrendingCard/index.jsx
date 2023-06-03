@@ -35,7 +35,6 @@ const TrendingCard = ({ reload }) => {
                 dispatch({ type: TYPES.FETCH_ERROR, payload: error.message });
             }
         };
-        console.log("reload")
         fetchTrendings();
     }, [reload]);
 
