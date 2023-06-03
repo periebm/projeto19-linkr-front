@@ -3,13 +3,23 @@ import styled from "styled-components";
 export const UrlContainer = styled.div`
     color: white;
     font-family: 'Lato';
-`
+`;
+
+export const GridContainer = styled.div`
+  display:flex;
+  gap:30px;
+
+`;
+
+export const TrendingsContainer = styled.div`
+  margin-top:40px;
+`;
 
 export const FeedContainer = styled.div`
     display: flex;
     flex-direction: column;
 
-`
+`;
 
 export const TimelineTitle = styled.div`
     font-family: 'Oswald';
@@ -19,7 +29,7 @@ export const TimelineTitle = styled.div`
     line-height: 64px;
     color: #FFFFFF;
     margin-top: 73px;
-`
+`;
 
 export const TimelinePageContainer = styled.div`
     background: #333333;
@@ -42,6 +52,7 @@ export const UserName = styled.p`
         cursor: pointer;
     }
 `
+
 export const DescriptionContainer = styled.p`
     width: 502px;
     font-family: 'Lato';
@@ -57,7 +68,7 @@ export const DescriptionContainer = styled.p`
         font-weight:700;
         color: #fff;
     }
-`
+`;
 
 export const PublishContainer = styled.div`
     display: flex;
@@ -96,14 +107,14 @@ export const ProfilePictureContainer = styled.div`
     height: 209px;
     display:flex;
     justify-content: center;
-`
+`;
 
 export const PostContentContainer = styled.div`
     width: 503px;
     display:flex;
     flex-direction: column;
     position: relative;
-`
+`;
 
 export const ShareToday = styled.div`
     font-family: 'Lato';
@@ -115,7 +126,7 @@ export const ShareToday = styled.div`
     height: 35px;
     margin: 0px;
     margin-top: 18px;
-`
+`;
 
 export const UrlInput = styled.input`
     width: 100%;
@@ -132,7 +143,7 @@ export const UrlInput = styled.input`
         line-height: 18px;
         color: #949494;
     }
-`
+`;
 
 export const DescriptionInput = styled.input`
     width: 100%;
@@ -151,7 +162,7 @@ export const DescriptionInput = styled.input`
         line-height: 66px;
         color: #949494;
     }
-`
+`;
 
 export const PublishButton = styled.button`
     width: 112px;
@@ -165,10 +176,10 @@ export const PublishButton = styled.button`
     font-size: 14px;
     line-height: 17px;
     color: #FFFFFF;
-`
+`;
 export const PublishButtonContainer = styled.div`
     display: flex;
     justify-content: right;
     width: 100%;
     margin-top: 5px;
-`
+`;

@@ -1,4 +1,4 @@
-import React, { useEffect, useReducer } from 'react';
+import React, { useContext, useEffect, useReducer, useState } from 'react';
 import Posts from '../../service/posts';
 import Trendings from '../../service/trendings';
 import { useParams } from "react-router-dom";
@@ -6,6 +6,7 @@ import SkeletonTrending from './Skeleton';
 import TrendingCard from '../../components/TrendingCard';
 import { RenderPosts } from '../../components/RenderPosts';
 import Header from '../../components/Header/Header';
+import { UserContext } from '../../App';
 
 import { Container, PostsArea, MainContent } from './styles';
 
@@ -41,7 +42,9 @@ const TrendingPage = () => {
             loading: false,
             error: ''
         });
+    const [reload, setReload] = useState(false);
     const { hashtag } = useParams();
+    const { userInfo } = useContext(UserContext);
 
     useEffect(() => {
         const fetchPosts = async () => {
@@ -54,19 +57,8 @@ const TrendingPage = () => {
             }
         };
 
-        const fetchTrendings = async () => {
-            dispatch({ type: TYPES.FETCH_REQUEST });
-            try {
-                const response = await Trendings.getTrendings();
-                dispatch({ type: TYPES.FETCH_TRENDINGS, trendings: response });
-            } catch (error) {
-                dispatch({ type: TYPES.FETCH_ERROR, payload: error.message });
-            }
-        };
-
         fetchPosts();
-        fetchTrendings();
-    }, [hashtag]);
+    }, [reload]);
 
     return (
         <Container>
@@ -82,7 +74,15 @@ const TrendingPage = () => {
                                     username={post.author.username}
                                     description={post.description}
                                     picture_url={post.author.picture}
+                                    key={post.id}
                                     url={post.url}
+                                    user_id={userInfo.id}
+                                    user_liked={post.user_liked}
+                                    total_likes={post.total_likes}
+                                    token={userInfo}
+                                    tokenJson={{ id: post.user_id }}
+                                    id={post.id}
+                                    setReload={setReload}
                                 />
                             ))
                         )}

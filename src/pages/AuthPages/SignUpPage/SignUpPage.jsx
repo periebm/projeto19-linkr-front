@@ -65,7 +65,6 @@ export default function SignUpPage() {
       .post(`http://localhost:5000/auth/signup`, body)
       .then((res) => {
         setIsLoading(false);
-        console.log("cadastro com sucesso");
         navigate("/");
       })
       .catch((err) => {

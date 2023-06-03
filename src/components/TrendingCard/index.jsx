@@ -17,7 +17,7 @@ const reducer = (state, action) => {
     }
 };
 
-const TrendingCard = () => {
+const TrendingCard = ({ reload }) => {
     const [{ loading, error, trendings }, dispatch] =
         useReducer(reducer, {
             trendings: [],
@@ -35,9 +35,8 @@ const TrendingCard = () => {
                 dispatch({ type: TYPES.FETCH_ERROR, payload: error.message });
             }
         };
-
         fetchTrendings();
-    }, []);
+    }, [reload]);
 
     return (
         <Container>
@@ -49,7 +48,7 @@ const TrendingCard = () => {
                     <div key={trending.name}>
                         <p>
                             <Link
-                                to={`/timeline/hashtag/${trending.name}`}
+                                to={`/hashtag/${trending.name}`}
                             >
                                 # {trending.name}
                             </Link>
