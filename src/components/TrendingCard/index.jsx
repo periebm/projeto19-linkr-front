@@ -49,7 +49,7 @@ const TrendingCard = ({ reload }) => {
                     <div key={trending.name}>
                         <p>
                             <Link
-                                to={`/timeline/hashtag/${trending.name}`}
+                                to={`/hashtag/${trending.name}`}
                             >
                                 # {trending.name}
                             </Link>
