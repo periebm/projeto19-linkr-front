@@ -1,38 +1,75 @@
-import { useState } from "react";
+import { useState, useEffect, useRef, useContext } from "react";
 import { DescriptionContainer, PostContainer, PostContentContainer, UrlContainer, UserName } from "../../pages/TimelinePage/styles.js";
 import LinkPreview from "../LinkPreview/index.jsx";
 import { FilledHeart, HeartOutline, LikeContainer, ProfilePicture, ProfilePictureContainer, StyledTrash, StyledPencil, EditInput } from "./styles.js";
 import DialogBox from "../Dialog/index.js";
 import { UserContext } from "../../App.js";
-import { useContext } from "react";
 import Posts from "../../service/posts.js";
 import BoldHashtag from "../BoldHashtags/index.jsx";
 import axios from "axios";
 
 
-export function RenderPosts(props) {
-    const { picture_url, username, description, url, id, setReload, user_id, user_liked, total_likes, liked_users, reloadPage, tokenJson, token } = props;
+export function RenderPosts({ 
+    picture_url, 
+    username, 
+    description, 
+    url, 
+    id, 
+    setReload, 
+    user_id, 
+    user_liked, 
+    total_likes, 
+    liked_users, 
+    reloadPage, 
+    tokenJson, 
+    token 
+}) {
     const [showModal, setShowModal] = useState(false);
     const [descriptionState, setDescriptionState] = useState(description);
     const [isEditing, setIsEditing] = useState(false);
+    const [loading, setLoading] = useState(false);
+    const inputRef = useRef(null);
+    const [isLiked, setIsLiked] = useState(user_liked)
+    const [isDisabled, setIsDisabled] = useState(false);
+    const axiosUrl = `${process.env.REACT_APP_API_URL}/like`
     const { userInfo } = useContext(UserContext);
 
-    const handleEditClick = async () => {
+    useEffect(() => {
         if (isEditing) {
+            inputRef.current.focus();
+        }
+    }, [isEditing]);
+
+    const handleEditClick = () => {
+        if (isEditing) {
+            setDescriptionState(description);
+        }
+        setIsEditing(!isEditing);
+    };
+
+    const handleSubmitOnKeyDown = async (e) => {
+        if (e.key === 'Escape') {
+            setIsEditing(false);
+            setDescriptionState(description);
+        }
+
+        if (e.key === 'Enter') {
+            setLoading(true)
             try {
                 const body = {
                     description: descriptionState
                 };
                 await Posts.updatePost(body, id);
+                setReload(previous => !previous)
+                setIsEditing(false);
             } catch (error) {
-                console.log(error);
+                alert("Não foi possível fazer a edição!");
+                setIsEditing(true);
+            } finally{
+                setLoading(false)
             }
         }
-        setIsEditing(!isEditing);
     };
-    const [isLiked, setIsLiked] = useState(user_liked)
-    const [isDisabled, setIsDisabled] = useState(false);
-    const axiosUrl = `${process.env.REACT_APP_API_URL}/like`
 
     function likePost() {
         const config = {
@@ -52,7 +89,7 @@ export function RenderPosts(props) {
                 .then(() => {
                     setIsDisabled(false)
                     setIsLiked(false)
-                    setReload(!reloadPage)
+                    setReload(previous => !previous)
                 })
                 .catch((a) => {
                     console.log("erro", a)
@@ -66,10 +103,10 @@ export function RenderPosts(props) {
                 .then(() => {
                     setIsDisabled(false)
                     setIsLiked(true)
-                    setReload(!reloadPage)
+                    setReload(previous => !previous)
                 })
                 .catch((a) => {
-                    console.log("erro", a.response.data)
+                    console.log("erro", a.response?.data)
                     setIsDisabled(false)
                 });
         }
@@ -87,13 +124,20 @@ export function RenderPosts(props) {
                     <LikeContainer>
                         <button disabled={isDisabled} onClick={likePost}>{isLiked ? <FilledHeart></FilledHeart>
                             : <HeartOutline></HeartOutline>}</button>
-                        <p>{total_likes} {total_likes == 1 ? 'like' : 'likes'}</p>
+                        <p>{total_likes} {total_likes === 1 ? 'like' : 'likes'}</p>
                     </LikeContainer>
                 </ProfilePictureContainer>
                 <PostContentContainer>
                     <UserName>{username}</UserName>
                     {isEditing ? (
-                        <EditInput type="text" value={descriptionState} onChange={(e) => setDescriptionState(e.target.value)} />
+                        <EditInput
+                            type="text"
+                            ref={inputRef}
+                            value={descriptionState}
+                            disabled={loading}
+                            onKeyDown={handleSubmitOnKeyDown}
+                            onChange={(e) => setDescriptionState(e.target.value)}
+                        />
                     ) : (
                         <DescriptionContainer>
                             <BoldHashtag text={descriptionState} />

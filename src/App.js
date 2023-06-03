@@ -23,7 +23,7 @@ export default function App() {
     <Router className="App">
       <UserContext.Provider value={{ userInfo, setUserInfo }}>
         <Routes>
-          <Route path="/timeline/hashtag/:hashtag" element={<TrendingPage />} />
+          <Route path="/hashtag/:hashtag" element={<TrendingPage />} />
           <Route path="/" element={<LoginPage />} />
           <Route path="/sign-up" element={<SignUpPage />} />
           <Route path="/timeline" element={<TimelinePage />} />

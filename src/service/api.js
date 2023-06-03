@@ -41,7 +41,6 @@ for (const method of methods) {
             const response = await axiosInstance({ method, url, data: body });
             return fullResponse ? response : response.data;
         } catch (error) {
-            Promise.reject(error);
             throw new Error(error.message);
         }
     };
