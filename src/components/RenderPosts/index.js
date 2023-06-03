@@ -27,6 +27,7 @@ export function RenderPosts({
     const [showModal, setShowModal] = useState(false);
     const [descriptionState, setDescriptionState] = useState(description);
     const [isEditing, setIsEditing] = useState(false);
+    const [loading, setLoading] = useState(false);
     const inputRef = useRef(null);
     const [isLiked, setIsLiked] = useState(user_liked)
     const [isDisabled, setIsDisabled] = useState(false);
@@ -53,6 +54,7 @@ export function RenderPosts({
         }
 
         if (e.key === 'Enter') {
+            setLoading(true)
             try {
                 const body = {
                     description: descriptionState
@@ -63,6 +65,8 @@ export function RenderPosts({
             } catch (error) {
                 alert("Não foi possível fazer a edição!");
                 setIsEditing(true);
+            } finally{
+                setLoading(false)
             }
         }
     };
@@ -130,6 +134,7 @@ export function RenderPosts({
                             type="text"
                             ref={inputRef}
                             value={descriptionState}
+                            disabled={loading}
                             onKeyDown={handleSubmitOnKeyDown}
                             onChange={(e) => setDescriptionState(e.target.value)}
                         />
