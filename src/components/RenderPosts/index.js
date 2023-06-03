@@ -9,20 +9,20 @@ import BoldHashtag from "../BoldHashtags/index.jsx";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-export function RenderPosts({
-    picture_url,
-    username,
-    description,
-    url,
-    id,
-    setReload,
-    user_id,
-    user_liked,
-    total_likes,
-    liked_users,
-    reloadPage,
-    tokenJson,
-    token
+export function RenderPosts({ 
+    picture_url, 
+    username, 
+    description, 
+    url, 
+    id, 
+    setReload, 
+    user_id, 
+    user_liked, 
+    total_likes, 
+    liked_users, 
+    reloadPage, 
+    tokenJson, 
+    token 
 }) {
     const [showModal, setShowModal] = useState(false);
     const [descriptionState, setDescriptionState] = useState(description);
@@ -32,7 +32,7 @@ export function RenderPosts({
     const [isLiked, setIsLiked] = useState(user_liked)
     const [isDisabled, setIsDisabled] = useState(false);
     const axiosUrl = `${process.env.REACT_APP_API_URL}/like`
-    const { userInfo } = useContext(UserContext);
+    const userInfo  = JSON.parse(localStorage.getItem("userInfo"));;
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -66,7 +66,7 @@ export function RenderPosts({
             } catch (error) {
                 alert("Não foi possível fazer a edição!");
                 setIsEditing(true);
-            } finally {
+            } finally{
                 setLoading(false)
             }
         }
@@ -148,7 +148,7 @@ export function RenderPosts({
                         <LinkPreview url={url}></LinkPreview>
                     </UrlContainer>
                     {(userInfo.id) === (user_id) && <StyledPencil onClick={handleEditClick} />}
-                    {(userInfo.id) === (user_id) && <StyledTrash data-test="delete-btn" onClick={() => setShowModal(true)} />}
+                    {(userInfo.id) === (user_id) && <StyledTrash  data-test="delete-btn" onClick={() => setShowModal(true) } />}
                 </PostContentContainer>
             </PostContainer>
             <DialogBox
