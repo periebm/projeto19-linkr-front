@@ -8,6 +8,11 @@ export const UrlContainer = styled.div`
 export const GridContainer = styled.div`
   display:flex;
   gap:30px;
+`;
+
+export const NoPostsYet = styled.div`
+  display:flex;
+  width: 611px;
 
 `;
 

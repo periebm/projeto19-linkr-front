@@ -8,6 +8,7 @@ import SearchBar from "./components/SearchBar";
 import { useEffect } from "react";
 import { createContext } from "react";
 import { useState } from "react";
+import UserProfilePage from "./pages/UserProfilePage";
 
 export const UserContext = createContext();
 
@@ -27,6 +28,8 @@ export default function App() {
           <Route path="/" element={<LoginPage />} />
           <Route path="/sign-up" element={<SignUpPage />} />
           <Route path="/timeline" element={<TimelinePage />} />
+          <Route path="/user/:id" element={<UserProfilePage />} />
+
         </Routes>
       </UserContext.Provider>
     </Router>
