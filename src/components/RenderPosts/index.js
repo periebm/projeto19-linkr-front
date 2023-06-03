@@ -6,21 +6,23 @@ import DialogBox from "../Dialog/index.js";
 import { UserContext } from "../../App.js";
 import Posts from "../../service/posts.js";
 import BoldHashtag from "../BoldHashtags/index.jsx";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
-export function RenderPosts({ 
-    picture_url, 
-    username, 
-    description, 
-    url, 
-    id, 
-    setReload, 
-    user_id, 
-    user_liked, 
-    total_likes, 
-    liked_users, 
-    reloadPage, 
-    tokenJson, 
-    token 
+export function RenderPosts({
+    picture_url,
+    username,
+    description,
+    url,
+    id,
+    setReload,
+    user_id,
+    user_liked,
+    total_likes,
+    liked_users,
+    reloadPage,
+    tokenJson,
+    token
 }) {
     const [showModal, setShowModal] = useState(false);
     const [descriptionState, setDescriptionState] = useState(description);
@@ -64,7 +66,7 @@ export function RenderPosts({
             } catch (error) {
                 alert("Não foi possível fazer a edição!");
                 setIsEditing(true);
-            } finally{
+            } finally {
                 setLoading(false)
             }
         }
@@ -146,7 +148,7 @@ export function RenderPosts({
                         <LinkPreview url={url}></LinkPreview>
                     </UrlContainer>
                     {(userInfo.id) === (user_id) && <StyledPencil onClick={handleEditClick} />}
-                    {(userInfo.id) === (user_id) && <StyledTrash  data-test="delete-btn" onClick={() => setShowModal(true) } />}
+                    {(userInfo.id) === (user_id) && <StyledTrash data-test="delete-btn" onClick={() => setShowModal(true)} />}
                 </PostContentContainer>
             </PostContainer>
             <DialogBox
