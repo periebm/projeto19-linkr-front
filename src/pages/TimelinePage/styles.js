@@ -38,6 +38,9 @@ export const UserName = styled.p`
     font-size: 19px;
     line-height: 23px;
     color: #FFFFFF; 
+    :hover{
+        cursor: pointer;
+    }
 `
 export const DescriptionContainer = styled.p`
     width: 502px;

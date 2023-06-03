@@ -43,7 +43,7 @@ export function RenderPosts(props) {
                         }}></ProfilePicture>
                 </ProfilePictureContainer>
                 <PostContentContainer>
-                    <UserName onClick={()=> console.log(user_id)}>{username}</UserName>
+                    <UserName onClick={()=> navigate(`/user/${user_id}`)}>{username}</UserName>
                     {isEditing ? (
                         <EditInput type="text" value={descriptionState} onChange={(e) => setDescriptionState(e.target.value)} />
                     ) : (
@@ -55,7 +55,7 @@ export function RenderPosts(props) {
                         <LinkPreview url={url}></LinkPreview>
                     </UrlContainer>
                     {(userInfo.id) === (user_id) && <StyledPencil onClick={handleEditClick} />}
-                    {(userInfo.id) === (user_id) && <StyledTrash onClick={() => setShowModal(true)} />}
+                    {(userInfo.id) === (user_id) && <StyledTrash  data-test="delete-btn" onClick={() => setShowModal(true) } />}
                 </PostContentContainer>
             </PostContainer>
             <DialogBox

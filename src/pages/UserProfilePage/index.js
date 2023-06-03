@@ -5,9 +5,10 @@ import Header from '../../components/Header/Header';
 import { FeedContainer, TimelinePageContainer, TimelineTitle } from './styles.js';
 import PublishPost from '../../components/PublishPost/index.js';
 import { RenderPosts } from '../../components/RenderPosts/index.js';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 export default function UserProfilePage() {
+    const {id} = useParams();
     const initialUrl = process.env.REACT_APP_API_URL;
     const url = `${initialUrl}/posts`;
     const [reloadPage, setReload] = useState(false)
@@ -21,8 +22,8 @@ export default function UserProfilePage() {
             navigate("/");
         }
         fetchPosts();
-        decodeToken()
-    }, [reloadPage]);
+        decodeToken();
+    }, [reloadPage, id]);
 
 
     function fetchPosts() {
@@ -49,7 +50,7 @@ export default function UserProfilePage() {
         <TimelinePageContainer>
             <Header />
             <FeedContainer>
-                <TimelineTitle>timeline</TimelineTitle>
+                <TimelineTitle>{id}</TimelineTitle>
                 {posts.length === 0 ? (
                     <p>There are no posts yet.</p>
                 ) : (
