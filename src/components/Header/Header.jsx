@@ -45,8 +45,8 @@ export default function Header(props) {
 
   return (
     <HeaderContainer>
-      <Logo>linkr</Logo>
-      <SearchBar />
+      <Logo onClick={()=> navigate("/timeline")}>linkr</Logo>
+      <SearchBar/>
       <MenuContainer ref={menuRef}>
         <ArrowImg src={arrowImg} alt="" onClick={handleArrowClick} isMenuOpen={isMenuOpen} />
         <AvatarImg src={pictureUrl} alt="" onClick={handleArrowClick} />
@@ -117,6 +117,9 @@ const Logo = styled.h2`
   letter-spacing: 0.05em;
   text-align: left;
   color: #ffffff;
+  :hover{
+    cursor: pointer;
+  }
 `;
 
 const HeaderContainer = styled.div`

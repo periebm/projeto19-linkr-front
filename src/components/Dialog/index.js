@@ -6,7 +6,7 @@ import { ProgressBar } from "react-loader-spinner";
 
 export default function DialogBox({ showModal, setShowModal, id, setReload }) {
     const [isLoading, setIsLoading] = useState(false);
-    const URL = "http://localhost:5000"
+    const URL = process.env.REACT_APP_API_URL
     function DeletePost() {
         setIsLoading(true)
         const config = {
@@ -24,9 +24,7 @@ export default function DialogBox({ showModal, setShowModal, id, setReload }) {
                 setShowModal(false);
                 setIsLoading(false)
             });
-
     }
-
 
     return (
         <StyledMod
@@ -51,17 +49,19 @@ export default function DialogBox({ showModal, setShowModal, id, setReload }) {
                         <h1> Are you sure you want to delete this post? </h1>
 
                         <ButtonContainers>
-                            <Button
+                            <Button 
                                 ft_color={"#1877F2"}
                                 bg_color={"white"}
-                                onClick={() => setShowModal(false)}>
+                                onClick={() => setShowModal(false)}
+                                data-test="cancel">
                                 No, go back
                             </Button>
 
                             <Button
                                 ft_color={"white"}
                                 bg_color={"#1877F2"}
-                                onClick={() => DeletePost()}>
+                                onClick={() => DeletePost()}
+                                data-test="confirm">
                                 Yes, delete it
                             </Button>
                         </ButtonContainers>

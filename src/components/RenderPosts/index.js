@@ -1,28 +1,29 @@
-import { useState, useEffect, useRef, useContext } from "react";
+import { useState, useEffect, useRef } from "react";
 import { DescriptionContainer, PostContainer, PostContentContainer, UrlContainer, UserName } from "../../pages/TimelinePage/styles.js";
 import LinkPreview from "../LinkPreview/index.jsx";
 import { FilledHeart, HeartOutline, LikeContainer, ProfilePicture, ProfilePictureContainer, StyledTrash, StyledPencil, EditInput } from "./styles.js";
 import DialogBox from "../Dialog/index.js";
-import { UserContext } from "../../App.js";
 import Posts from "../../service/posts.js";
 import BoldHashtag from "../BoldHashtags/index.jsx";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { Tooltip as ReactTooltip } from 'react-tooltip'
+import 'react-tooltip/dist/react-tooltip.css'
 
-
-export function RenderPosts({ 
-    picture_url, 
-    username, 
-    description, 
-    url, 
-    id, 
-    setReload, 
-    user_id, 
-    user_liked, 
-    total_likes, 
-    liked_users, 
-    reloadPage, 
-    tokenJson, 
-    token 
+export function RenderPosts({
+    picture_url,
+    username,
+    description,
+    url,
+    id,
+    setReload,
+    user_id,
+    user_liked,
+    total_likes,
+    liked_users,
+    reloadPage,
+    tokenJson,
+    token
 }) {
     const [showModal, setShowModal] = useState(false);
     const [descriptionState, setDescriptionState] = useState(description);
@@ -31,14 +32,21 @@ export function RenderPosts({
     const inputRef = useRef(null);
     const [isLiked, setIsLiked] = useState(user_liked)
     const [isDisabled, setIsDisabled] = useState(false);
+    const [likedText, setLikedText] = useState("")
     const axiosUrl = `${process.env.REACT_APP_API_URL}/like`
-    const { userInfo } = useContext(UserContext);
-    console.log(userInfo)
+    const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+    const navigate = useNavigate();
+
     useEffect(() => {
         if (isEditing) {
             inputRef.current.focus();
         }
     }, [isEditing]);
+
+    useEffect(() => {
+        setLikedTextFunc(liked_users)
+    }, [liked_users])
+
 
     const handleEditClick = () => {
         if (isEditing) {
@@ -46,6 +54,57 @@ export function RenderPosts({
         }
         setIsEditing(!isEditing);
     };
+
+    function setLikedTextFunc(array) {
+        const totalLikesNumber = parseInt(total_likes);
+        if (array.includes(token.username)) {
+            if (totalLikesNumber >= 4) {
+                setLikedText(`Você, ${array[0]} e outras ${totalLikesNumber - 2} pessoas`);
+            } else {
+                switch (totalLikesNumber) {
+                    case 3:
+                        setLikedText(`Você, ${array[0]} e mais 1 pessoa`);
+                        break;
+                    case 2:
+                        setLikedText(`Você e ${array[0]}`);
+                        break;
+                    case 1:
+                        setLikedText(`Você`);
+                        break;
+                    case 0:
+                        setLikedText(`Ninguem`);
+                        break;
+                    default:
+                        setLikedText(`aff`);
+                        break;
+                }
+            }
+        } else {
+            if (totalLikesNumber >= 4) {
+                setLikedText(`${array[0]}, ${array[1]} e outras ${totalLikesNumber - 2} pessoas`);
+            } else {
+                switch (totalLikesNumber) {
+                    case 3:
+                        setLikedText(`${array[0]}, ${array[1]} e mais 1 pessoa`);
+                        break;
+                    case 2:
+                        setLikedText(`${array[0]} e ${array[1]}`);
+                        break;
+                    case 1:
+                        setLikedText(`${array[0]}`);
+                        break;
+                    case 0:
+                        setLikedText(`Ninguem`);
+                        break;
+                    default:
+                        setLikedText(`aff`);
+                        break;
+                }
+            }
+        }
+    }
+
+
 
     const handleSubmitOnKeyDown = async (e) => {
         if (e.key === 'Escape') {
@@ -65,7 +124,7 @@ export function RenderPosts({
             } catch (error) {
                 alert("Não foi possível fazer a edição!");
                 setIsEditing(true);
-            } finally{
+            } finally {
                 setLoading(false)
             }
         }
@@ -87,6 +146,7 @@ export function RenderPosts({
             });
             promise
                 .then(() => {
+                    setLikedTextFunc(liked_users)
                     setIsDisabled(false)
                     setIsLiked(false)
                     setReload(previous => !previous)
@@ -101,6 +161,7 @@ export function RenderPosts({
             const promise = axios.post(axiosUrl, body, config)
             promise
                 .then(() => {
+                    setLikedTextFunc(liked_users)
                     setIsDisabled(false)
                     setIsLiked(true)
                     setReload(previous => !previous)
@@ -122,13 +183,19 @@ export function RenderPosts({
                             e.target.src = 'https://cdn.onlinewebfonts.com/svg/img_258083.png';
                         }}></ProfilePicture>
                     <LikeContainer>
-                        <button disabled={isDisabled} onClick={likePost}>{isLiked ? <FilledHeart></FilledHeart>
+                        <button disabled={isDisabled} data-test="like-btn" onClick={likePost}>{isLiked ? <FilledHeart></FilledHeart>
                             : <HeartOutline></HeartOutline>}</button>
-                        <p>{total_likes} {total_likes === 1 ? 'like' : 'likes'}</p>
+                        <ReactTooltip data-test="tooltip" id="like-number" style={{ backgroundColor: "rgba(255, 255, 255, 0.9)", color: "#505050" }} />
+                        <p data-test="counter"
+                            data-tooltip-id="like-number"
+                            data-tooltip-place="bottom"
+                            data-tooltip-content={likedText}>
+                            {total_likes} {total_likes === 1 ? 'like' : 'likes'}
+                        </p>
                     </LikeContainer>
                 </ProfilePictureContainer>
                 <PostContentContainer>
-                    <UserName>{username}</UserName>
+                    <UserName data-test="username" onClick={() => navigate(`/user/${user_id}`)}>{username}</UserName>
                     {isEditing ? (
                         <EditInput
                             type="text"
@@ -147,7 +214,7 @@ export function RenderPosts({
                         <LinkPreview url={url}></LinkPreview>
                     </UrlContainer>
                     {(userInfo.id) === (user_id) && <StyledPencil onClick={handleEditClick} />}
-                    {(userInfo.id) === (user_id) && <StyledTrash onClick={() => setShowModal(true)} />}
+                    {(userInfo.id) === (user_id) && <StyledTrash data-test="delete-btn" onClick={() => setShowModal(true)} />}
                 </PostContentContainer>
             </PostContainer>
             <DialogBox

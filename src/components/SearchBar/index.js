@@ -2,8 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { InputContainer, StyledIcon, StyledInput, StyledForm, Dropdown, DropdownRow } from "./styled"
 import { AiOutlineSearch } from 'react-icons/ai';
 import { getUsers } from "../../service/users";
-
-//import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 
 export default function SearchBar() {
@@ -13,7 +12,7 @@ export default function SearchBar() {
     const [showSearch, setShowSearch] = useState(false)
     const [filterArray, setFiltered] = useState([])
     const searchInputRef = useRef(null);
-    //const navigate = useNavigate();
+    const navigate = useNavigate();
 
     useEffect(() => { //Funcao p/ fechar dropdown quando clicar fora do input
         const handleClickOutside = (event) => {
@@ -64,12 +63,13 @@ export default function SearchBar() {
                     debounceTimeout={300}
                     onChange={handleChange}
                     onClick={() => handleChange}
+                    data-test="search"
                 />
                 <StyledIcon> <AiOutlineSearch /></StyledIcon>
                 <Dropdown showSearch={showSearch}>
                     {
                         filterArray.map((u) => (
-                            <DropdownRow key={u.id} onClick={() => console.log(`navigate(/user/${u.id})`)}>
+                            <DropdownRow data-test="user-search" key={u.id} onClick={() => navigate(`/user/${u.id}`)}>
                                 <img src={u.picture_url} alt="" />
                                 <h3>{u.username}</h3>
                             </DropdownRow>

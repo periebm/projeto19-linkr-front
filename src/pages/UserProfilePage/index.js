@@ -2,19 +2,21 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import jwtDecode from 'jwt-decode';
 import Header from '../../components/Header/Header';
-import { FeedContainer, TimelinePageContainer, TimelineTitle, GridContainer, TrendingsContainer } from './styles.js';
+import { FeedContainer, TimelinePageContainer, TimelineTitle, GridContainer, NoPostsYet, TrendingsContainer } from './styles.js';
 import PublishPost from '../../components/PublishPost/index.js';
 import { RenderPosts } from '../../components/RenderPosts/index.js';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import TrendingCard from '../../components/TrendingCard';
 
-export default function TimelinePage() {
+export default function UserProfilePage() {
+    const {id} = useParams();
     const initialUrl = process.env.REACT_APP_API_URL;
     const [reloadPage, setReload] = useState(false);
     const [posts, setPosts] = useState([]);
     const [token, setToken] = useState({});
+    const [username, setUsername] = useState("...")
     const codedToken = JSON.parse(localStorage.getItem('userInfo'));
-    const url = `${initialUrl}/posts`;
+    const url = `${initialUrl}/posts/user/${id}`;
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -23,16 +25,19 @@ export default function TimelinePage() {
         }
         fetchPosts();
         decodeToken();
-    }, [reloadPage]);
+    }, [reloadPage, id]);
 
 
     function fetchPosts() {
         const config = {
             headers: { authorization: `Bearer ${codedToken.token}` }
         };
+        
         axios.get(url, config)
             .then((response) => {
                 setPosts(response.data);
+                console.log(response.data[0].username)
+                setUsername(response.data[0].username)
             })
             .catch((error) => console.log('Erro ao buscar os posts', error.response));
     }
@@ -53,20 +58,11 @@ export default function TimelinePage() {
         <TimelinePageContainer>
             <Header />
             <FeedContainer>
-                <TimelineTitle>timeline</TimelineTitle>
+                <TimelineTitle>{`${username}'s posts`}</TimelineTitle>
                 <GridContainer>
                     <div>
-                        <PublishPost
-                            setPosts={setPosts}
-                            posts={posts}
-                            token={token}
-                            setToken={setToken}
-                            setReload={setReload}
-                        >
-                        </PublishPost>
-
-                        {posts.length === 0 ? (
-                            <p data-test="message">There are no posts yet.</p>
+                        {posts.length === 0 || posts[0].author === null ? (
+                            <NoPostsYet><p>There are no posts yet.</p></NoPostsYet>
                         ) : (
                             posts.map((post) => {
                                 return (
