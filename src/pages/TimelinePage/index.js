@@ -66,7 +66,7 @@ export default function TimelinePage() {
                         </PublishPost>
 
                         {posts.length === 0 ? (
-                            <p>There are no posts yet.</p>
+                            <p data-test="message">There are no posts yet.</p>
                         ) : (
                             posts.map((post) => {
                                 return (

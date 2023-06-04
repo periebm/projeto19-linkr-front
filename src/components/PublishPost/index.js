@@ -47,13 +47,13 @@ const PublishPost = ({ posts, setPosts, token, setToken, setReload }) => {
       <ProfilePictureContainer>
         <ProfilePicture pictureUrl={token.pictureUrl}></ProfilePicture>
       </ProfilePictureContainer>
-      <PostContentContainer>
+      <PostContentContainer data-test="publish-box">
         <ShareToday>What are you going to share today?</ShareToday>
         <form onSubmit={publish}>
-          <UrlInput disabled={isDisabled} type="text" placeholder='http://...' required onChange={handleChange} value={form.url} name='url'></UrlInput>
-          <DescriptionInput disabled={isDisabled} type="text" placeholder='Awesome article about #javascript' onChange={handleChange} value={form.description} name='description'></DescriptionInput>
+          <UrlInput data-test="link" disabled={isDisabled} type="text" placeholder='http://...' required onChange={handleChange} value={form.url} name='url'></UrlInput>
+          <DescriptionInput data-test="description" disabled={isDisabled} type="text" placeholder='Awesome article about #javascript' onChange={handleChange} value={form.description} name='description'></DescriptionInput>
           <PublishButtonContainer>
-            <PublishButton type="submit" disabled={isDisabled}>{isDisabled ? "Publishing..." : "Publish"}</PublishButton>
+            <PublishButton data-test="publish-btn" type="submit" disabled={isDisabled}>{isDisabled ? "Publishing..." : "Publish"}</PublishButton>
           </PublishButtonContainer>
         </form>
       </PostContentContainer>
