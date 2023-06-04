@@ -33,7 +33,7 @@ export function RenderPosts({
     const [isDisabled, setIsDisabled] = useState(false);
     const axiosUrl = `${process.env.REACT_APP_API_URL}/like`
     const { userInfo } = useContext(UserContext);
-
+    console.log(userInfo)
     useEffect(() => {
         if (isEditing) {
             inputRef.current.focus();
@@ -114,7 +114,7 @@ export function RenderPosts({
 
     return (
         <>
-            <PostContainer>
+            <PostContainer data-test="post">
                 <ProfilePictureContainer>
                     <ProfilePicture
                         pictureUrl={picture_url}
