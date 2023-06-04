@@ -55,54 +55,54 @@ export function RenderPosts({
         setIsEditing(!isEditing);
     };
 
-   function setLikedTextFunc(array) {
-    const totalLikesNumber = parseInt(total_likes);
-    if (array.includes(token.username)) {
-        if (totalLikesNumber >= 4) {
-            setLikedText(`Você, ${array[0]} e outras ${totalLikesNumber - 2} pessoas`);
-        } else {
-            switch (totalLikesNumber) {
-                case 3:
-                    setLikedText(`Você, ${array[0]} e mais 1 pessoa`);
-                    break;
-                case 2:
-                    setLikedText(`Você e ${array[0]}`);
-                    break;
-                case 1:
-                    setLikedText(`Você`);
-                    break;
-                case 0:
-                    setLikedText(`Ninguem`);
-                    break;
-                default:
-                    setLikedText(`aff`);
-                    break;
+    function setLikedTextFunc(array) {
+        const totalLikesNumber = parseInt(total_likes);
+        if (array.includes(token.username)) {
+            if (totalLikesNumber >= 4) {
+                setLikedText(`Você, ${array[0]} e outras ${totalLikesNumber - 2} pessoas`);
+            } else {
+                switch (totalLikesNumber) {
+                    case 3:
+                        setLikedText(`Você, ${array[0]} e mais 1 pessoa`);
+                        break;
+                    case 2:
+                        setLikedText(`Você e ${array[0]}`);
+                        break;
+                    case 1:
+                        setLikedText(`Você`);
+                        break;
+                    case 0:
+                        setLikedText(`Ninguem`);
+                        break;
+                    default:
+                        setLikedText(`aff`);
+                        break;
+                }
             }
-        }
-    } else {
-        if (totalLikesNumber >= 4) {
-            setLikedText(`${array[0]}, ${array[1]} e outras ${totalLikesNumber - 2} pessoas`);
         } else {
-            switch (totalLikesNumber) {
-                case 3:
-                    setLikedText(`${array[0]}, ${array[1]} e mais 1 pessoa`);
-                    break;
-                case 2:
-                    setLikedText(`${array[0]} e ${array[1]}`);
-                    break;
-                case 1:
-                    setLikedText(`${array[0]}`);
-                    break;
-                case 0:
-                    setLikedText(`Ninguem`);
-                    break;
-                default:
-                    setLikedText(`aff`);
-                    break;
+            if (totalLikesNumber >= 4) {
+                setLikedText(`${array[0]}, ${array[1]} e outras ${totalLikesNumber - 2} pessoas`);
+            } else {
+                switch (totalLikesNumber) {
+                    case 3:
+                        setLikedText(`${array[0]}, ${array[1]} e mais 1 pessoa`);
+                        break;
+                    case 2:
+                        setLikedText(`${array[0]} e ${array[1]}`);
+                        break;
+                    case 1:
+                        setLikedText(`${array[0]}`);
+                        break;
+                    case 0:
+                        setLikedText(`Ninguem`);
+                        break;
+                    default:
+                        setLikedText(`aff`);
+                        break;
+                }
             }
         }
     }
-}
 
 
 
@@ -175,7 +175,7 @@ export function RenderPosts({
 
     return (
         <>
-            <PostContainer>
+            <PostContainer data-test="post">
                 <ProfilePictureContainer>
                     <ProfilePicture
                         pictureUrl={picture_url}
@@ -183,10 +183,11 @@ export function RenderPosts({
                             e.target.src = 'https://cdn.onlinewebfonts.com/svg/img_258083.png';
                         }}></ProfilePicture>
                     <LikeContainer>
-                        <button disabled={isDisabled} onClick={likePost}>{isLiked ? <FilledHeart></FilledHeart>
+                        <button disabled={isDisabled} data-test="like-btn" onClick={likePost}>{isLiked ? <FilledHeart></FilledHeart>
                             : <HeartOutline></HeartOutline>}</button>
-                        <ReactTooltip id="like-number" style={{ backgroundColor: "rgba(255, 255, 255, 0.9)", color: "#505050" }} />
-                        <p data-tooltip-id="like-number"
+                        <ReactTooltip data-test="tooltip" id="like-number" style={{ backgroundColor: "rgba(255, 255, 255, 0.9)", color: "#505050" }} />
+                        <p data-test="counter"
+                            data-tooltip-id="like-number"
                             data-tooltip-place="bottom"
                             data-tooltip-content={likedText}>
                             {total_likes} {total_likes === 1 ? 'like' : 'likes'}
@@ -194,7 +195,7 @@ export function RenderPosts({
                     </LikeContainer>
                 </ProfilePictureContainer>
                 <PostContentContainer>
-                    <UserName onClick={() => navigate(`/user/${user_id}`)}>{username}</UserName>
+                    <UserName data-test="username" onClick={() => navigate(`/user/${user_id}`)}>{username}</UserName>
                     {isEditing ? (
                         <EditInput
                             type="text"
