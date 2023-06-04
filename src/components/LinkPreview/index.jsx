@@ -57,7 +57,7 @@ const LinkPreview = ({ url }) => {
                     </ErrorContainer>
                 ) :
                     (
-                        <Container onClick={() => handleRedirect()}>
+                        <Container data-test="link" onClick={() => handleRedirect()}>
                             <LeftColumn>
                                 <h2>{link && link["og:title"]}</h2>
                                 <p>{link?.description}</p>
