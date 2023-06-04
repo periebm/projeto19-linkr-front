@@ -7,12 +7,15 @@ import { ProgressBar } from "react-loader-spinner";
 export default function DialogBox({ showModal, setShowModal, id, setReload }) {
     const [isLoading, setIsLoading] = useState(false);
     const URL = process.env.REACT_APP_API_URL
+    const userInfo = JSON.parse(localStorage.getItem("userInfo"))
+
     function DeletePost() {
         setIsLoading(true)
+        console.log(userInfo.token)
         const config = {
-            headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } 
+            headers: { Authorization: `Bearer ${userInfo.token}` } 
         }
-
+        
         axios.delete(`${URL}/delete/${id}`, config)
             .then((response) => {
                 setShowModal(false);

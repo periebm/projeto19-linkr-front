@@ -7,7 +7,7 @@ const PublishPost = ({ posts, setPosts, token, setToken, setReload }) => {
   const url = `http://localhost:5000/posts`;
   const [form, setForm] = useState({ description: "", url: "", user_id: "" });
   const [isDisabled, setIsDisabled] = useState(false);
-  const codedToken = localStorage.getItem('token');
+  const codedToken = JSON.parse(localStorage.getItem('userInfo'));
 
   const handleChange = (event) => {
     setForm({ ...form, [event.target.name]: event.target.value, user_id: token.id });
@@ -23,8 +23,9 @@ const PublishPost = ({ posts, setPosts, token, setToken, setReload }) => {
 
   const publish = (e) => {
     e.preventDefault();
+    console.log(codedToken.token)
     const config = {
-      headers: { authorization: `Bearer ${codedToken}` }
+      headers: { authorization: `Bearer ${codedToken.token}` }
     };
     const promise = axios.post(url, form, config);
     setIsDisabled(true);
