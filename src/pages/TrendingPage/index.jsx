@@ -92,7 +92,7 @@ const TrendingPage = () => {
                             ))
                         )}
                 </PostsArea>
-                <TrendingCard />
+                <TrendingCard reload={reload}/>
             </MainContent>
         </Container>
     );
