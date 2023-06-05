@@ -62,7 +62,7 @@ export default function SignUpPage() {
 
     setIsLoading(true);
     axios
-      .post(`http://localhost:5000/auth/signup`, body)
+      .post(`${process.env.REACT_APP_API_URL}/auth/signup`, body)
       .then((res) => {
         setIsLoading(false);
         navigate("/");
