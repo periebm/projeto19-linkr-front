@@ -52,7 +52,7 @@ const TrendingPage = () => {
         }
 
         const fetchPosts = async () => {
-            dispatch({ type: TYPES.FETCH_REQUEST });
+            dispatch({ type: TYPES.FETCH_TRENDING_CHANGE });
             try {
                 const response = await Posts.getPostsByHashtag(hashtag);
                 dispatch({ type: TYPES.FETCH_POSTS, posts: response });
@@ -62,7 +62,7 @@ const TrendingPage = () => {
         };
 
         fetchPosts();
-    }, [reload]);
+    }, [reload, hashtag]);
 
     return (
         <Container>
@@ -83,6 +83,7 @@ const TrendingPage = () => {
                                     user_id={userInfo.id}
                                     user_liked={post.user_liked}
                                     total_likes={post.total_likes}
+                                    liked_users={post.liked_users}
                                     token={userInfo}
                                     tokenJson={{ id: post.user_id }}
                                     id={post.id}
@@ -91,7 +92,7 @@ const TrendingPage = () => {
                             ))
                         )}
                 </PostsArea>
-                <TrendingCard />
+                <TrendingCard reload={reload}/>
             </MainContent>
         </Container>
     );
