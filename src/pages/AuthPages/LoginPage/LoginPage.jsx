@@ -50,7 +50,7 @@ export default function LoginPage() {
 
     setIsLoading(true);
     axios
-      .post(`http://localhost:5000/auth/login`, body)
+      .post(`${process.env.REACT_APP_API_URL}/auth/login`, body)
       .then((res) => {
         setIsLoading(false);
         const userInfo = res.data;

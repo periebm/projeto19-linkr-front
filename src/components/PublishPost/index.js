@@ -4,7 +4,7 @@ import axios from "axios";
 import styled from "styled-components";
 
 const PublishPost = ({ posts, setPosts, token, setToken, setReload }) => {
-  const url = `http://localhost:5000/posts`;
+  const url = `${process.env.REACT_APP_API_URL}/posts`;
   const [form, setForm] = useState({ description: "", url: "", user_id: "" });
   const [isDisabled, setIsDisabled] = useState(false);
   const codedToken = JSON.parse(localStorage.getItem('userInfo'));

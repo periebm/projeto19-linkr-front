@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useReducer, useState } from 'react';
 import Posts from '../../service/posts';
-import Trendings from '../../service/trendings';
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import SkeletonTrending from './Skeleton';
 import TrendingCard from '../../components/TrendingCard';
 import { RenderPosts } from '../../components/RenderPosts';
@@ -45,8 +44,13 @@ const TrendingPage = () => {
     const [reload, setReload] = useState(false);
     const { hashtag } = useParams();
     const { userInfo } = useContext(UserContext);
+    const navigate = useNavigate()
 
     useEffect(() => {
+        if(!userInfo){
+            navigate("/")
+        }
+
         const fetchPosts = async () => {
             dispatch({ type: TYPES.FETCH_REQUEST });
             try {
