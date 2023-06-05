@@ -20,6 +20,7 @@ export default function TimelinePage() {
     useEffect(() => {
         if (!codedToken) {
             navigate("/");
+            return;
         }
         fetchPosts();
         decodeToken();
