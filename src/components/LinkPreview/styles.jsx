@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const Container = styled.div`
+export const Container = styled.a`
   display:grid;
   grid-template-columns:2fr 1fr;
   border: 1px solid #4D4D4D;

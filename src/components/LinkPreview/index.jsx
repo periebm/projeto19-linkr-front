@@ -29,11 +29,11 @@ const LinkPreview = ({ url }) => {
         });
 
     useEffect(() => {
-
         const fetchUrl = async () => {
             dispatch({ type: TYPES.FETCH_REQUEST });
             try {
                 const response = await urlMetadata(`https://cors-anywhere-nxl6.onrender.com/${url}`);
+                console.log(response)
                 dispatch({ type: TYPES.FETCH_SUCESSS, payload: response });
             } catch (error) {
                 dispatch({ type: TYPES.FETCH_ERROR, payload: error.message });
@@ -43,28 +43,19 @@ const LinkPreview = ({ url }) => {
 
     }, []);
 
-    const handleRedirect = () => {
-        window.open(url, '_blank');
-    };
-
     return (
         <>
             {loading ?
                 <SkeletonLinkPreview /> :
-                error ? (
-                    <ErrorContainer>
-                        <p>Oops! An error ocurred! <br /> failed to get URL informations</p>
-                    </ErrorContainer>
-                ) :
                     (
-                        <Container data-test="link" onClick={() => handleRedirect()}>
+                        <Container data-test="link" href={url} target="_blank" >
                             <LeftColumn>
                                 <h2>{link && link["og:title"]}</h2>
                                 <p>{link?.description}</p>
                                 <p>{url}</p>
                             </LeftColumn>
                             <RightColumn>
-                                <img src={link && link["og:image"]} alt=""
+                                <img src={link && link["og:image"] || NotFound} alt=""
                                     onError={(e) => {
                                         e.target.src = NotFound;
                                     }} />
