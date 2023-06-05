@@ -82,8 +82,9 @@ export default function SignUpPage() {
       </ThumbContainer>
       <SignInContainer>
         <FormContainer onSubmit={signIn}>
-          <input onChange={handleChange} name="email" id="email" type="text" placeholder="e-mail" />
+          <input data-test="email" onChange={handleChange} name="email" id="email" type="text" placeholder="e-mail" />
           <input
+            data-test="password"
             onChange={handleChange}
             name="password"
             id="password"
@@ -91,6 +92,7 @@ export default function SignUpPage() {
             placeholder="password"
           />
           <input
+            data-test="username"
             onChange={handleChange}
             name="username"
             id="username"
@@ -98,17 +100,18 @@ export default function SignUpPage() {
             placeholder="username"
           />
           <input
+            data-test="picture-url"
             onChange={handleChange}
             name="pictureUrl"
             id="pictureUrl"
             type="text"
             placeholder="picture url"
           />
-          <button type="submit" disabled={isLoading}>
+          <button data-test="sign-up-btn" type="submit" disabled={isLoading}>
             {isLoading ? <ProgressBar borderColor="#ffffff" /> : "Sign Up"}
           </button>
         </FormContainer>
-        <Link to="/">Switch back to log in</Link>
+        <Link data-test="login-link" to="/">Switch back to log in</Link>
       </SignInContainer>
     </SignInPageContainer>
   );

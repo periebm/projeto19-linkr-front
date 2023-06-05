@@ -74,6 +74,7 @@ export default function LoginPage() {
       <LoginContainer>
         <FormContainer onSubmit={signIn}>
           <input
+            data-test="email"
             onChange={handleChange}
             name="email"
             id="email"
@@ -81,17 +82,18 @@ export default function LoginPage() {
             placeholder="e-mail"
           />
           <input
+            data-test="password"
             onChange={handleChange}
             name="password"
             id="password"
             type="password"
             placeholder="password"
           />
-          <button type="submit" disabled={isLoading}>
+          <button data-test="login-btn" type="submit" disabled={isLoading}>
             {isLoading ? <ProgressBar borderColor="#ffffff" /> : "Log In"}
           </button>
         </FormContainer>
-        <Link to="/sign-up">First time? Create an account!</Link>
+        <Link data-test="sign-up-link" to="/sign-up">First time? Create an account!</Link>
       </LoginContainer>
     </LoginPageContainer>
   );
