@@ -7,6 +7,7 @@ export const Container = styled.a`
   border-radius: 11px;
   text-align:left;
   max-height:168px;
+  text-decoration:none;
 
   cursor:pointer;
 `;
