@@ -37,7 +37,7 @@ const PublishPost = ({ posts, setPosts, token, setToken, setReload }) => {
         fetchPosts();
       })
       .catch((a) => {
-        alert("Houve um erro ao publicar seu link");
+        alert("There was an error publishing your link");
         setIsDisabled(false);
       });
   };
