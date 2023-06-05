@@ -49,11 +49,11 @@ export default function Header(props) {
       <SearchBar/>
       <MenuContainer ref={menuRef}>
         <ArrowImg src={arrowImg} alt="" onClick={handleArrowClick} isMenuOpen={isMenuOpen} />
-        <AvatarImg src={pictureUrl} alt="" onClick={handleArrowClick} />
+        <AvatarImg data-test="avatar" src={pictureUrl} alt="" onClick={handleArrowClick} />
       </MenuContainer>
-      <LogoutButton onClick={logout} isMenuOpen={isMenuOpen} ref={buttonRef}>
+      <div data-test="menu"><LogoutButton data-test="logout" onClick={logout} isMenuOpen={isMenuOpen} ref={buttonRef}>
         Logout
-      </LogoutButton>
+      </LogoutButton></div>
     </HeaderContainer>
   );
 }
