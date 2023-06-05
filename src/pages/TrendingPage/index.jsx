@@ -63,7 +63,7 @@ const TrendingPage = () => {
     return (
         <Container>
             <Header />
-            <h1># {hashtag.toLowerCase()}</h1>
+            <h1 data-test="hashtag-title"># {hashtag.toLowerCase()}</h1>
             <MainContent>
                 <PostsArea>
                     {loading ?

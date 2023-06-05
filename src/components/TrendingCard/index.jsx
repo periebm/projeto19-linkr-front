@@ -39,14 +39,14 @@ const TrendingCard = ({ reload }) => {
     }, [reload]);
 
     return (
-        <Container>
+        <Container data-test="trending">
             <TrendingCardTitle>
                 <h2>trending</h2>
             </TrendingCardTitle>
             <div>
                 {trendings?.map((trending) => (
-                    <div key={trending.name}>
-                        <p>
+                    <div key={trending.name} >
+                        <p data-test="hashtag">
                             <Link
                                 to={`/hashtag/${trending.name}`}
                             >

@@ -55,7 +55,7 @@ export default function LoginPage() {
         setIsLoading(false);
         const userInfo = res.data;
         localStorage.setItem("userInfo", JSON.stringify(userInfo));
-        setUserInfo(userInfo.token);
+        setUserInfo(userInfo);
         navigate("/timeline");
       })
       .catch((err) => {
