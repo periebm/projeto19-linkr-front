@@ -23,8 +23,15 @@ export const TrendingsContainer = styled.div`
 export const FeedContainer = styled.div`
     display: flex;
     flex-direction: column;
+    padding-top: 73px;
 
 `;
+
+export const TopContainer = styled.div`
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+`
 
 export const TimelineTitle = styled.div`
     font-family: 'Oswald';
@@ -33,8 +40,26 @@ export const TimelineTitle = styled.div`
     font-size: 43px;
     line-height: 64px;
     color: #FFFFFF;
-    margin-top: 73px;
-`;
+`
+
+export const FollowButton = styled.button`
+    display: ${(props) => props.showButton === false && "none"};
+    background-color: ${(props) => props.following === false ? "#1877F2" : "white"};
+    height: 31px;
+    width: 112px;
+    color: ${(props) => props.following === true ? "#1877F2" : "white"};;
+    font-family: 'Lato';
+    font-weight: 700;
+    font-size: 14px;
+    border-radius: 5px;
+    border: none;
+    :hover{
+        transform: scale(1.05);
+    }
+    :disabled{
+        background-color: gray;
+    }
+    `
 
 export const TimelinePageContainer = styled.div`
     background: #333333;

@@ -2,7 +2,7 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import jwtDecode from 'jwt-decode';
 import Header from '../../components/Header/Header';
-import { FeedContainer, TimelinePageContainer, TimelineTitle, GridContainer, NoPostsYet, TrendingsContainer } from './styles.js';
+import { FeedContainer, TimelinePageContainer, TimelineTitle, GridContainer, NoPostsYet, TrendingsContainer, TopContainer, FollowButton } from './styles.js';
 import PublishPost from '../../components/PublishPost/index.js';
 import { RenderPosts } from '../../components/RenderPosts/index.js';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -17,7 +17,11 @@ export default function UserProfilePage() {
     const [username, setUsername] = useState("...")
     const codedToken = JSON.parse(localStorage.getItem('userInfo'));
     const url = `${initialUrl}/posts/user/${id}`;
+    const urlFollow = `${initialUrl}/follow`
     const navigate = useNavigate();
+    const [isDisabled, setIsDisabled] = useState(false);
+    const [isFollowing, setFollowing] = useState(false);
+    const [showButton, setShowButton] = useState(true);
 
     useEffect(() => {
         if (!codedToken) {
@@ -25,6 +29,13 @@ export default function UserProfilePage() {
         }
         fetchPosts();
         decodeToken();
+        console.log(id)
+        if(codedToken.id == id){
+            setShowButton(false);
+        }
+        else {
+            setShowButton(true);
+        }
     }, [reloadPage, id]);
 
 
@@ -36,7 +47,7 @@ export default function UserProfilePage() {
         axios.get(url, config)
             .then((response) => {
                 setPosts(response.data);
-                console.log(response.data[0].username)
+                setFollowing(response.data[0].is_following)
                 setUsername(response.data[0].username)
             })
             .catch((error) => console.log('Erro ao buscar os posts', error.response));
@@ -53,12 +64,44 @@ export default function UserProfilePage() {
         }
     }
 
+    function handleFollow(){
+        console.log(id)
+        const config = {
+            headers: { authorization: `Bearer ${codedToken.token}` }
+          };
+          const promise = axios.post(urlFollow,{following_id: id}, config);
+          setIsDisabled(true);
+          promise
+            .then((a) => {
+              setIsDisabled(false);
+              setFollowing(!isFollowing);
+            })
+            .catch((a) => {
+              alert("There was an error");
+              setIsDisabled(false);
+            });
+
+    }
+
 
     return (
         <TimelinePageContainer>
             <Header />
             <FeedContainer>
-                <TimelineTitle>{`${username}'s posts`}</TimelineTitle>
+                <TopContainer>
+                    <TimelineTitle>{`${username}'s posts`}</TimelineTitle>
+                    <FollowButton
+                        disabled={isDisabled}
+                        following={isFollowing}
+                        onClick={()=>handleFollow()}
+                        showButton = {showButton}
+                        data-test="follow-btn"
+                        >
+                            {!isFollowing ? "Follow" : "Unfollow"}
+                        </FollowButton>
+                </TopContainer>
+                
+
                 <GridContainer>
                     <div>
                         {posts.length === 0 || posts[0].author === null ? (
