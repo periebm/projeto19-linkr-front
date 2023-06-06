@@ -82,13 +82,15 @@ export const PublishContainer = styled.div`
 `;
 
 export const PostContainer = styled.div`
+    z-index: 0;
+    position: relative;
     display: flex;
     width: 611px;
     height: 276px;
     background: #171717;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     border-radius: 16px;
-    margin-top: 16px;
+    margin-top: ${(({isReposted}) => isReposted ? "46px" : "16px")};
     padding: 18px;
     padding-left:0px;
 `;
