@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import SearchBar from "../SearchBar";
 import jwtDecode from "jwt-decode";
+import { InputContainer } from "../SearchBar/styled";
 
 export default function Header(props) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -45,18 +46,33 @@ export default function Header(props) {
 
   return (
     <HeaderContainer>
-      <Logo onClick={()=> navigate("/timeline")}>linkr</Logo>
-      <SearchBar/>
+      <Logo onClick={() => navigate("/timeline")}>linkr</Logo>
+      <SearchBarContainer>
+        <SearchBar />
+      </SearchBarContainer>
       <MenuContainer ref={menuRef}>
         <ArrowImg src={arrowImg} alt="" onClick={handleArrowClick} isMenuOpen={isMenuOpen} />
         <AvatarImg data-test="avatar" src={pictureUrl} alt="" onClick={handleArrowClick} />
       </MenuContainer>
-      <div data-test="menu"><LogoutButton data-test="logout" onClick={logout} isMenuOpen={isMenuOpen} ref={buttonRef}>
-        Logout
-      </LogoutButton></div>
+      <div data-test="menu">
+        <LogoutButton data-test="logout" onClick={logout} isMenuOpen={isMenuOpen} ref={buttonRef}>
+          Logout
+        </LogoutButton>
+      </div>
     </HeaderContainer>
   );
 }
+
+const SearchBarContainer = styled.div`
+  position: absolute;
+  width: 40%;
+  left: calc(50vw - 20%);
+  display: flex;
+  align-items: center;
+  >div {
+    width: 100%;
+  }
+`;
 
 const LogoutButton = styled.button`
   z-index: -5;
@@ -92,8 +108,8 @@ const ArrowImg = styled.img`
 
 const AvatarImg = styled.img`
   object-fit: cover;
-  width: 5vh;
-  height: 5vh;
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
   cursor: pointer;
 `;
@@ -102,7 +118,11 @@ const MenuContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: flex-end;
+  position: fixed;
+  top: 0;
+  right: 0;
   width: 5vw;
+  height: 60px;
   min-width: 130px;
   gap: 15px;
   background-color: #151515;
@@ -117,7 +137,7 @@ const Logo = styled.h2`
   letter-spacing: 0.05em;
   text-align: left;
   color: #ffffff;
-  :hover{
+  :hover {
     cursor: pointer;
   }
 `;

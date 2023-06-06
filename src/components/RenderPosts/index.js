@@ -9,8 +9,14 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { Tooltip as ReactTooltip } from 'react-tooltip'
 import 'react-tooltip/dist/react-tooltip.css'
+import styled from "styled-components";
+import RepostHeader from "../RepostHeader/RepostHeader.jsx";
+import repostImg from "../../assets/icons/repost.svg";
+import DialogRepost from "../DialogRepost/index.js";
 
 export function RenderPosts({
+    total_reposts,
+    reposted_by,
     picture_url,
     username,
     description,
@@ -25,6 +31,7 @@ export function RenderPosts({
     tokenJson,
     token
 }) {
+    const [showRepostConfirm, setShowRepostConfirm] = useState(false)
     const [showModal, setShowModal] = useState(false);
     const [descriptionState, setDescriptionState] = useState(description);
     const [isEditing, setIsEditing] = useState(false);
@@ -173,9 +180,15 @@ export function RenderPosts({
         }
     }
 
+    function repostPost() {
+        setShowRepostConfirm(true);
+    }
+
     return (
-        <>
-            <PostContainer data-test="post">
+        <PostOutSideContainer>
+        {reposted_by && <RepostHeader reposted_by={reposted_by} /> }
+        {showRepostConfirm && <DialogRepost setReload={setReload} id={id} showModal={showRepostConfirm} setShowModal={setShowRepostConfirm}></DialogRepost>}
+            <PostContainer isReposted={!!reposted_by} data-test="post">
                 <ProfilePictureContainer>
                     <ProfilePicture
                         pictureUrl={picture_url}
@@ -191,6 +204,15 @@ export function RenderPosts({
                             data-tooltip-place="bottom"
                             data-tooltip-content={likedText}>
                             {total_likes} {total_likes === 1 ? 'like' : 'likes'}
+                        </p>
+
+                        <button style={{cursor: "pointer"}} disabled={isDisabled} data-test="like-btn" onClick={repostPost}><img src={repostImg} alt=""></img></button>
+                        <ReactTooltip data-test="tooltip" id="like-number" style={{ backgroundColor: "rgba(255, 255, 255, 0.9)", color: "#505050"}} />
+                        <p data-test="counter"
+                            data-tooltip-id="like-number"
+                            data-tooltip-place="bottom"
+                            >
+                            {total_reposts} {total_reposts === 1 ? 're_post' : 're_posts'}
                         </p>
                     </LikeContainer>
                 </ProfilePictureContainer>
@@ -223,7 +245,10 @@ export function RenderPosts({
                 id={id}
                 setReload={setReload}
                 user_id={user_id} />
-        </>
+        </PostOutSideContainer>
     );
 }
 
+const PostOutSideContainer = styled.div`
+position: relative;
+`

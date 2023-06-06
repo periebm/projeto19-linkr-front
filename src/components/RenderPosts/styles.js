@@ -57,6 +57,7 @@ export const LikeContainer = styled.div`
         text-align: center;
         margin-top: 2px;
         color: #FFFFFF;
+        margin-bottom: 20px;
     }
     button{
         all: unset;

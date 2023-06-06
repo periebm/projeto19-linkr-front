@@ -86,6 +86,8 @@ export default function TimelinePage() {
                                         user_id={post.user_id}
                                         setReload={setReload}
                                         reloadPage={reloadPage}
+                                        reposted_by={post.reposted_by}
+                                        total_reposts={post.total_reposts}
                                     />
                                 );
                             })
