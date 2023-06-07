@@ -7,14 +7,17 @@ import Posts from "../../service/posts.js";
 import BoldHashtag from "../BoldHashtags/index.jsx";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { Tooltip as ReactTooltip } from 'react-tooltip'
-import 'react-tooltip/dist/react-tooltip.css'
+import { Tooltip as ReactTooltip } from 'react-tooltip';
+import 'react-tooltip/dist/react-tooltip.css';
 import styled from "styled-components";
 import RepostHeader from "../RepostHeader/RepostHeader.jsx";
 import repostImg from "../../assets/icons/repost.svg";
+import commentIcon from "../../assets/icons/comment.svg";
 import DialogRepost from "../DialogRepost/index.js";
+import Comments from "../Comments/index.jsx";
 
 export function RenderPosts({
+    total_comments,
     total_reposts,
     reposted_by,
     picture_url,
@@ -31,16 +34,17 @@ export function RenderPosts({
     tokenJson,
     token
 }) {
-    const [showRepostConfirm, setShowRepostConfirm] = useState(false)
+    const [showRepostConfirm, setShowRepostConfirm] = useState(false);
     const [showModal, setShowModal] = useState(false);
     const [descriptionState, setDescriptionState] = useState(description);
     const [isEditing, setIsEditing] = useState(false);
     const [loading, setLoading] = useState(false);
     const inputRef = useRef(null);
-    const [isLiked, setIsLiked] = useState(user_liked)
+    const [isLiked, setIsLiked] = useState(user_liked);
     const [isDisabled, setIsDisabled] = useState(false);
-    const [likedText, setLikedText] = useState("")
-    const axiosUrl = `${process.env.REACT_APP_API_URL}/like`
+    const [likedText, setLikedText] = useState("");
+    const [isOpen, setIsOpen] = useState(false);
+    const axiosUrl = `${process.env.REACT_APP_API_URL}/like`;
     const userInfo = JSON.parse(localStorage.getItem("userInfo"));
     const navigate = useNavigate();
 
@@ -51,8 +55,8 @@ export function RenderPosts({
     }, [isEditing]);
 
     useEffect(() => {
-        setLikedTextFunc(liked_users)
-    }, [liked_users])
+        setLikedTextFunc(liked_users);
+    }, [liked_users]);
 
 
     const handleEditClick = () => {
@@ -111,8 +115,6 @@ export function RenderPosts({
         }
     }
 
-
-
     const handleSubmitOnKeyDown = async (e) => {
         if (e.key === 'Escape') {
             setIsEditing(false);
@@ -120,19 +122,19 @@ export function RenderPosts({
         }
 
         if (e.key === 'Enter') {
-            setLoading(true)
+            setLoading(true);
             try {
                 const body = {
                     description: descriptionState
                 };
                 await Posts.updatePost(body, id);
-                setReload(previous => !previous)
+                setReload(previous => !previous);
                 setIsEditing(false);
             } catch (error) {
                 alert("Não foi possível fazer a edição!");
                 setIsEditing(true);
             } finally {
-                setLoading(false)
+                setLoading(false);
             }
         }
     };
@@ -144,8 +146,8 @@ export function RenderPosts({
         const body = {
             user_id: tokenJson.id,
             post_id: id
-        }
-        setIsDisabled(true)
+        };
+        setIsDisabled(true);
         if (isLiked) {
             const promise = axios.delete(axiosUrl, {
                 headers: { authorization: `Bearer ${token.token}` },
@@ -153,29 +155,29 @@ export function RenderPosts({
             });
             promise
                 .then(() => {
-                    setLikedTextFunc(liked_users)
-                    setIsDisabled(false)
-                    setIsLiked(false)
-                    setReload(previous => !previous)
+                    setLikedTextFunc(liked_users);
+                    setIsDisabled(false);
+                    setIsLiked(false);
+                    setReload(previous => !previous);
                 })
                 .catch((a) => {
-                    console.log("erro", a)
-                    setIsDisabled(false)
+                    console.log("erro", a);
+                    setIsDisabled(false);
                 });
 
         }
         else {
-            const promise = axios.post(axiosUrl, body, config)
+            const promise = axios.post(axiosUrl, body, config);
             promise
                 .then(() => {
-                    setLikedTextFunc(liked_users)
-                    setIsDisabled(false)
-                    setIsLiked(true)
-                    setReload(previous => !previous)
+                    setLikedTextFunc(liked_users);
+                    setIsDisabled(false);
+                    setIsLiked(true);
+                    setReload(previous => !previous);
                 })
                 .catch((a) => {
-                    console.log("erro", a.response?.data)
-                    setIsDisabled(false)
+                    console.log("erro", a.response?.data);
+                    setIsDisabled(false);
                 });
         }
     }
@@ -186,8 +188,8 @@ export function RenderPosts({
 
     return (
         <PostOutSideContainer>
-        {reposted_by && <RepostHeader reposted_by={reposted_by} /> }
-        {showRepostConfirm && <DialogRepost setReload={setReload} id={id} showModal={showRepostConfirm} setShowModal={setShowRepostConfirm}></DialogRepost>}
+            {reposted_by && <RepostHeader reposted_by={reposted_by} />}
+            {showRepostConfirm && <DialogRepost setReload={setReload} id={id} showModal={showRepostConfirm} setShowModal={setShowRepostConfirm}></DialogRepost>}
             <PostContainer isReposted={!!reposted_by} data-test="post">
                 <ProfilePictureContainer>
                     <ProfilePicture
@@ -196,9 +198,18 @@ export function RenderPosts({
                             e.target.src = 'https://cdn.onlinewebfonts.com/svg/img_258083.png';
                         }}></ProfilePicture>
                     <LikeContainer>
-                        <button disabled={isDisabled} data-test="like-btn" onClick={likePost}>{isLiked ? <FilledHeart></FilledHeart>
-                            : <HeartOutline></HeartOutline>}</button>
-                        <ReactTooltip data-test="tooltip" id="like-number" style={{ backgroundColor: "rgba(255, 255, 255, 0.9)", color: "#505050" }} />
+                        <button disabled={isDisabled} data-test="like-btn" onClick={likePost}>
+                            {isLiked ? <FilledHeart /> : <HeartOutline />}
+                        </button>
+
+                        <ReactTooltip
+                            data-test="tooltip"
+                            id="like-number"
+                            style={{
+                                backgroundColor: "rgba(255, 255, 255, 0.9)",
+                                color: "#505050"
+                            }} />
+
                         <p data-test="counter"
                             data-tooltip-id="like-number"
                             data-tooltip-place="bottom"
@@ -206,12 +217,23 @@ export function RenderPosts({
                             {total_likes} {total_likes === 1 ? 'like' : 'likes'}
                         </p>
 
-                        <button style={{cursor: "pointer"}} disabled={isDisabled} data-test="like-btn" onClick={repostPost}><img src={repostImg} alt=""></img></button>
-                        <ReactTooltip data-test="tooltip" id="like-number" style={{ backgroundColor: "rgba(255, 255, 255, 0.9)", color: "#505050"}} />
+                        <button style={{ cursor: "pointer" }} disabled={isDisabled} onClick={() => setIsOpen(!isOpen)}>
+                            <img src={commentIcon} alt=""></img>
+                        </button>
+
+                        <p data-test="counter">
+                            {total_comments} {total_comments === 1 ? 'comment' : 'comments'}
+                        </p>
+
+                        <button style={{ cursor: "pointer" }} disabled={isDisabled} onClick={() => { }}>
+                            <img src={repostImg} alt="" />
+                        </button>
+
+                        <ReactTooltip data-test="tooltip" id="like-number" style={{ backgroundColor: "rgba(255, 255, 255, 0.9)", color: "#505050" }} />
                         <p data-test="counter"
                             data-tooltip-id="like-number"
                             data-tooltip-place="bottom"
-                            >
+                        >
                             {total_reposts} {total_reposts === 1 ? 're_post' : 're_posts'}
                         </p>
                     </LikeContainer>
@@ -245,10 +267,11 @@ export function RenderPosts({
                 id={id}
                 setReload={setReload}
                 user_id={user_id} />
+            <Comments postId={id} isOpen={isOpen} />
         </PostOutSideContainer>
     );
 }
 
 const PostOutSideContainer = styled.div`
 position: relative;
-`
+`;
