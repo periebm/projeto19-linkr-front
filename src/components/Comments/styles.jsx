@@ -6,9 +6,9 @@ export const Container = styled.ul`
   font-style: normal;
   margin-top:-15px;
   transition: all .6s ease;
-  height: ${({isOpen}) => !isOpen ? '0' : '200px'};
-  overflow: ${({isOpen}) => !isOpen ? 'hidden' : 'visible'};
-  margin-bottom:${({isOpen}) => !isOpen ? '36px' : '80px'};
+  height: ${({ isOpen }) => !isOpen ? '0' : '200px'};
+  overflow: ${({ isOpen }) => !isOpen ? 'hidden' : 'visible'};
+  margin-bottom:${({ isOpen }) => !isOpen ? '36px' : '80px'};
  
   form{
     background-color:#1E1E1E;
@@ -20,7 +20,7 @@ export const Container = styled.ul`
     border-bottom-right-radius: 16px;
     position:relative;
     transition: opacity .6s ease;
-    opacity: ${({isOpen}) => !isOpen ? '0.1' : '1'};
+    opacity: ${({ isOpen }) => !isOpen ? '0.1' : '1'};
 
     img{
         width:40px;
@@ -47,7 +47,11 @@ export const Container = styled.ul`
         background-color:#252525;
         border-radius:8px;
         border:0;
-        color:#575757;   
+        color:#fff;   
+
+        &::placeholder{
+            color:#999999;
+        }
     }
   }
 `;
@@ -59,7 +63,7 @@ export const CommentList = styled.ul`
     overflow-y:auto;
 
     transition: all .6s ease;
-    height: ${({isOpen}) => !isOpen ? '0' : '200px'};
+    height: ${({ isOpen }) => !isOpen ? '0' : '200px'};
 
 
     .highlight{

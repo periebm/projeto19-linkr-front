@@ -44,6 +44,7 @@ export function RenderPosts({
     const [isDisabled, setIsDisabled] = useState(false);
     const [likedText, setLikedText] = useState("");
     const [isOpen, setIsOpen] = useState(false);
+    const [totalComments, setTotalComments] = useState(total_comments);
     const axiosUrl = `${process.env.REACT_APP_API_URL}/like`;
     const userInfo = JSON.parse(localStorage.getItem("userInfo"));
     const navigate = useNavigate();
@@ -222,7 +223,7 @@ export function RenderPosts({
                         </button>
 
                         <p data-test="counter">
-                            {total_comments} {total_comments === 1 ? 'comment' : 'comments'}
+                            {totalComments} {total_comments === 1 ? 'comment' : 'comments'}
                         </p>
 
                         <button style={{ cursor: "pointer" }} disabled={isDisabled} onClick={() => { }}>
@@ -267,7 +268,7 @@ export function RenderPosts({
                 id={id}
                 setReload={setReload}
                 user_id={user_id} />
-            <Comments postId={id} isOpen={isOpen} />
+            <Comments postId={id} isOpen={isOpen} setTotalComments={setTotalComments} />
         </PostOutSideContainer>
     );
 }

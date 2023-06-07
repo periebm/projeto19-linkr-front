@@ -18,7 +18,7 @@ const reducer = (state, action) => {
     }
 };
 
-const Comments = ({ postId, isOpen }) => {
+const Comments = ({ postId, isOpen, setTotalComments }) => {
     const [{ loading, error, comments }, dispatch] =
         useReducer(reducer, {
             comments: null,
@@ -49,6 +49,8 @@ const Comments = ({ postId, isOpen }) => {
             dispatch({ type: TYPES.FETCH_REQUEST });
             const response = await commentsApi.createComment({ postId, content: inputRef.current.value });
             dispatch({ type: TYPES.FETCH_SUCESSS, payload: [...comments, ...response] });
+            setTotalComments(previous => Number(previous) + 1)
+            inputRef.current.value = '';
         } catch (error) {
             dispatch({ type: TYPES.FETCH_ERROR, payload: error.message });
         }
