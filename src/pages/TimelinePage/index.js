@@ -1,11 +1,12 @@
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { useEffect, useState } from 'react';
+import InfiniteScroll from 'react-infinite-scroller';
+import { useNavigate } from 'react-router-dom';
 import jwtDecode from 'jwt-decode';
 import Header from '../../components/Header/Header';
 import { FeedContainer, TimelinePageContainer, TimelineTitle, GridContainer, TrendingsContainer, NewPostContainer, NoPostMessage } from './styles.js';
 import PublishPost from '../../components/PublishPost/index.js';
 import { RenderPosts } from '../../components/RenderPosts/index.js';
-import { useNavigate } from 'react-router-dom';
 import TrendingCard from '../../components/TrendingCard';
 import { useInterval } from '@react-hooks-library/core'
 
@@ -14,9 +15,13 @@ export default function TimelinePage() {
     const [reloadPage, setReload] = useState(false);
     const [posts, setPosts] = useState([]);
     const [token, setToken] = useState({});
-    const [areThereNewPosts, setAreThereNewPosts] = useState(false)
-    const [storedPost, setStoredPost] = useState([])
-    const [postDifference, setPostDifference] = useState(0)
+    const [areThereNewPosts, setAreThereNewPosts] = useState(false);
+    const [storedPost, setStoredPost] = useState([]);
+    const [totalPosts, setTotalPosts] = useState(0)
+    const [postDifference, setPostDifference] = useState(0);
+    const [offset, setOffset] = useState(0)
+    const [hasMore, setHasMore] = useState(true)
+    const [limit, setLimit] = useState(10)
     const [isFollowingAnyone, setFollowing] = useState(false);
     const codedToken = JSON.parse(localStorage.getItem('userInfo'));
     const url = `${initialUrl}/posts`;
@@ -32,35 +37,37 @@ export default function TimelinePage() {
         decodeToken();
     }, [reloadPage]);
 
-    useInterval(fetchPostsInterval, 15000)
-
+    useInterval(fetchPostsInterval, 15000);
 
     function fetchPosts(newPost) {
         const config = {
             headers: { authorization: `Bearer ${codedToken.token}` }
         };
         axios.get(url, config)
-            .then((response) => {
-                if (newPost) {
-                    setPosts(newPost);
-                }
-                else {
-                    setPosts(response.data);
-                }
-            })
-            .catch((error) => console.log('Erro ao buscar os posts', error.response));
+        .then((response) => {
+            const postsData = response.data.slice(0, limit);
+            setTotalPosts(response.data.length)
+            if (newPost) {
+                setPosts(newPost);
+            } else {
+                setPosts(postsData);
+            }
+        })
+        .catch((error) => console.log('Erro ao buscar os posts', error.response));
     }
+
     function fetchPostsInterval() {
         const config = {
             headers: { authorization: `Bearer ${codedToken.token}` }
         };
         axios.get(url, config)
             .then((response) => {
-                if (response.data.length > posts.length) {
-                    setAreThereNewPosts(true)
-                    setPostDifference(response.data.length - posts.length)
+                setTotalPosts(response.data.length)
+                if (response.data.length > totalPosts) {
+                    setAreThereNewPosts(true);
+                    setPostDifference(response.data.length - totalPosts);
                 }
-                setStoredPost(response.data);
+                setStoredPost(response.data.slice(0, limit + response.data.length - totalPosts));
             })
             .catch((error) => console.log('Erro ao buscar os posts', error.response));
     }
@@ -87,10 +94,31 @@ export default function TimelinePage() {
         }
     }
 
+    async function loadMorePosts() {
+
+        const config = {
+            headers: { authorization: `Bearer ${codedToken.token}` }
+        };
+
+        axios.get(`${url}?offset=${offset + 10}`, config)
+            .then((response) => {
+                setOffset(offset + 10);
+                setLimit(limit + 10)
+                const newPosts = response.data;
+                if (newPosts.length < 10) {
+                    setHasMore(false)
+                }
+
+                setPosts((prevPosts) => [...prevPosts, ...newPosts]);
+            })
+            .catch((error) => console.log('Erro ao buscar os posts', error.response));
+    }
+
+
     function loadNewPosts() {
-        setAreThereNewPosts(false)
-        setPostDifference(0)
-        fetchPosts(storedPost)
+        setAreThereNewPosts(false);
+        setPostDifference(0);
+        fetchPosts(storedPost);
     }
 
     return (
@@ -122,8 +150,14 @@ export default function TimelinePage() {
                                 posts.length === 0 ? (
                                     <NoPostMessage data-test="message">No posts found from your friends.</NoPostMessage>
                                 ) : (
-                                    posts.map((post) => {
-                                        return (
+                                    <InfiniteScroll
+                                pageStart={0}
+                                loadMore={loadMorePosts}
+                                hasMore={hasMore}
+                                loader={<div key={0}>Loading...</div>}
+                            >
+                                    {posts.map((post) => (
+                                        
                                             <RenderPosts
                                                 tokenJson={token}
                                                 token={codedToken}
@@ -143,8 +177,8 @@ export default function TimelinePage() {
                                                 total_comments={post.total_comments}
                                                 total_reposts={post.total_reposts}
                                             />
-                                        );
-                                    })
+                                        )
+                                    )}</InfiniteScroll>
                                 )
                             ) : <NoPostMessage data-test="message">You don't follow anyone yet. Search for new friends!.</NoPostMessage>
 
@@ -155,10 +189,8 @@ export default function TimelinePage() {
                         <TrendingCard reload={reloadPage} />
                     </TrendingsContainer>
                 </GridContainer>
-
             </FeedContainer>
-
-        </TimelinePageContainer >
+        </TimelinePageContainer>
     );
 }
 
