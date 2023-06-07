@@ -8,7 +8,7 @@ export const Container = styled.ul`
   transition: all .6s ease;
   height: ${({isOpen}) => !isOpen ? '0' : '200px'};
   overflow: ${({isOpen}) => !isOpen ? 'hidden' : 'visible'};
-  margin-bottom:${({isOpen}) => !isOpen ? '20px' : '50px'};
+  margin-bottom:${({isOpen}) => !isOpen ? '36px' : '80px'};
  
   form{
     background-color:#1E1E1E;

@@ -87,6 +87,7 @@ export default function TimelinePage() {
                                         setReload={setReload}
                                         reloadPage={reloadPage}
                                         reposted_by={post.reposted_by}
+                                        total_comments={post.total_comments}
                                         total_reposts={post.total_reposts}
                                     />
                                 );
