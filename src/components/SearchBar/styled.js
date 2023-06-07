@@ -86,11 +86,21 @@ export const DropdownRow = styled.div`
         margin-left: 12px;
         font-family: 'Lato', sans-serif;
     }
+    h4{
+        font-size: 19px;
+        color: #C5C5C5;
+        margin-left: 12px;
+        font-weight: 400;
+        font-family: 'Lato', sans-serif;
+    }
     :hover{
         background-color: #1877F2;
     }
     @media (max-width: 768px) {
         h3{
+        font-size: 17px;
+        }
+        h4{
         font-size: 17px;
         }
     }

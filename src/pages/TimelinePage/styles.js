@@ -70,6 +70,13 @@ export const DescriptionContainer = styled.p`
     }
 `;
 
+export const NoPostMessage = styled.p`
+    font-family: 'Oswald';
+    font-weight: 400;
+    font-size: 24px;
+    color: white;
+`;
+
 
 
 export const NewPostContainer = styled.div`

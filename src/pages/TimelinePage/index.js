@@ -2,7 +2,7 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import jwtDecode from 'jwt-decode';
 import Header from '../../components/Header/Header';
-import { FeedContainer, TimelinePageContainer, TimelineTitle, GridContainer, TrendingsContainer, NewPostContainer } from './styles.js';
+import { FeedContainer, TimelinePageContainer, TimelineTitle, GridContainer, TrendingsContainer, NewPostContainer, NoPostMessage } from './styles.js';
 import PublishPost from '../../components/PublishPost/index.js';
 import { RenderPosts } from '../../components/RenderPosts/index.js';
 import { useNavigate } from 'react-router-dom';
@@ -17,6 +17,7 @@ export default function TimelinePage() {
     const [areThereNewPosts, setAreThereNewPosts] = useState(false)
     const [storedPost, setStoredPost] = useState([])
     const [postDifference, setPostDifference] = useState(0)
+    const [isFollowingAnyone, setFollowing] = useState(false);
     const codedToken = JSON.parse(localStorage.getItem('userInfo'));
     const url = `${initialUrl}/posts`;
     const navigate = useNavigate();
@@ -27,6 +28,7 @@ export default function TimelinePage() {
             return;
         }
         fetchPosts(null);
+        getFollowers();
         decodeToken();
     }, [reloadPage]);
 
@@ -61,6 +63,17 @@ export default function TimelinePage() {
                 setStoredPost(response.data);
             })
             .catch((error) => console.log('Erro ao buscar os posts', error.response));
+    }
+
+    function getFollowers(){
+        const config = {
+            headers: { authorization: `Bearer ${codedToken.token}` }
+        };
+        axios.get(`${initialUrl}/follow`, config)
+            .then((response) => {
+                setFollowing(response.data[0].is_following_anyone);
+            })
+            .catch((error) => console.log('Erro ao buscar os followers', error.response));
     }
 
     function decodeToken() {
@@ -103,34 +116,40 @@ export default function TimelinePage() {
                         </NewPostContainer>
                             :
                             <></>}
+                        {
+                            isFollowingAnyone === true ?
+                            ( 
+                                posts.length === 0 ? (
+                                    <NoPostMessage data-test="message">No posts found from your friends.</NoPostMessage>
+                                ) : (
+                                    posts.map((post) => {
+                                        return (
+                                            <RenderPosts
+                                                tokenJson={token}
+                                                token={codedToken}
+                                                key={post.id}
+                                                username={post.author.username}
+                                                picture_url={post.author.picture}
+                                                description={post.description}
+                                                url={post.url}
+                                                user_liked={post.user_liked}
+                                                total_likes={post.total_likes}
+                                                liked_users={post.liked_users}
+                                                id={post.id}
+                                                user_id={post.user_id}
+                                                setReload={setReload}
+                                                reloadPage={reloadPage}
+                                                reposted_by={post.reposted_by}
+                                                total_comments={post.total_comments}
+                                                total_reposts={post.total_reposts}
+                                            />
+                                        );
+                                    })
+                                )
+                            ) : <NoPostMessage data-test="message">You don't follow anyone yet. Search for new friends!.</NoPostMessage>
 
-                        {posts.length === 0 ? (
-                            <p data-test="message">There are no posts yet.</p>
-                        ) : (
-                            posts.map((post) => {
-                                return (
-                                    <RenderPosts
-                                        tokenJson={token}
-                                        token={codedToken}
-                                        key={post.id}
-                                        username={post.author.username}
-                                        picture_url={post.author.picture}
-                                        description={post.description}
-                                        url={post.url}
-                                        user_liked={post.user_liked}
-                                        total_likes={post.total_likes}
-                                        liked_users={post.liked_users}
-                                        id={post.id}
-                                        user_id={post.user_id}
-                                        setReload={setReload}
-                                        reloadPage={reloadPage}
-                                        reposted_by={post.reposted_by}
-                                        total_comments={post.total_comments}
-                                        total_reposts={post.total_reposts}
-                                    />
-                                );
-                            })
-                        )}
+                        }
+
                     </div>
                     <TrendingsContainer>
                         <TrendingCard reload={reloadPage} />
