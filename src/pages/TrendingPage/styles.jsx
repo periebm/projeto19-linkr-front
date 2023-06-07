@@ -22,7 +22,6 @@ export const Container = styled.div`
 export const PostsArea = styled.div`
   display:flex;
   flex-direction:column;
-  gap:16px;
 `;
 
 

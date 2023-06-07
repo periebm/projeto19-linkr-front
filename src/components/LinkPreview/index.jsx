@@ -5,7 +5,7 @@ import TYPES from "../../constants/types";
 import urlMetadata from "url-metadata";
 import NotFound from "../../assets/not_found.jpg";
 
-import { Container, LeftColumn, RightColumn, ErrorContainer } from './styles';
+import { Container, LeftColumn, RightColumn } from './styles';
 
 const reducer = (state, action) => {
     switch (action.type) {

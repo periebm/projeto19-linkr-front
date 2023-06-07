@@ -87,6 +87,7 @@ const TrendingPage = () => {
                                     token={userInfo}
                                     tokenJson={{ id: post.user_id }}
                                     id={post.id}
+                                    total_comments={post.total_comments}
                                     setReload={setReload}
                                 />
                             ))
