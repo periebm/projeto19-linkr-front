@@ -23,7 +23,6 @@ const PublishPost = ({ posts, setPosts, token, setToken, setReload }) => {
 
   const publish = (e) => {
     e.preventDefault();
-    console.log(codedToken.token)
     const config = {
       headers: { authorization: `Bearer ${codedToken.token}` }
     };

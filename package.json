@@ -6,6 +6,7 @@
     "@dhaiwat10/react-link-preview": "^1.15.0",
     "@fontsource-variable/oswald": "^5.0.2",
     "@fontsource/lato": "^5.0.2",
+    "@react-hooks-library/core": "^0.5.1",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
