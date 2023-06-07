@@ -11,7 +11,6 @@ export default function DialogRepost({ showModal, setShowModal, id, setReload })
 
     function repostPost() {
         setIsLoading(true)
-        console.log(userInfo.token)
         const config = {
             headers: { Authorization: `Bearer ${userInfo.token}` } 
         }

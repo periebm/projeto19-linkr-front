@@ -29,7 +29,6 @@ export default function UserProfilePage() {
         }
         fetchPosts();
         decodeToken();
-        console.log(id)
         if(codedToken.id == id){
             setShowButton(false);
         }
@@ -65,7 +64,6 @@ export default function UserProfilePage() {
     }
 
     function handleFollow(){
-        console.log(id)
         const config = {
             headers: { authorization: `Bearer ${codedToken.token}` }
           };
