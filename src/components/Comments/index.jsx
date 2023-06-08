@@ -88,7 +88,7 @@ const Comments = ({ postId, isOpen, setTotalComments }) => {
             <form onSubmit={handleSubmit} >
                 <img src={pictureUrl} alt="" />
                 <input type="text" placeholder='write a comment...' required ref={inputRef} onKeyDown={handleKeyDown} data-test="comment-input" />
-                <button>
+                <button data-test="comment-submit">
                     <img src={send} alt="" className='send' />
                 </button>
             </form>
