@@ -7,9 +7,10 @@ import PublishPost from '../../components/PublishPost/index.js';
 import { RenderPosts } from '../../components/RenderPosts/index.js';
 import { useNavigate, useParams } from 'react-router-dom';
 import TrendingCard from '../../components/TrendingCard';
+import InfiniteScroll from 'react-infinite-scroller';
 
 export default function UserProfilePage() {
-    const {id} = useParams();
+    const { id } = useParams();
     const initialUrl = process.env.REACT_APP_API_URL;
     const [reloadPage, setReload] = useState(false);
     const [posts, setPosts] = useState([]);
@@ -22,6 +23,8 @@ export default function UserProfilePage() {
     const [isDisabled, setIsDisabled] = useState(false);
     const [isFollowing, setFollowing] = useState(false);
     const [showButton, setShowButton] = useState(true);
+    const [offset, setOffset] = useState(0)
+    const [hasMore, setHasMore] = useState(true)
 
     useEffect(() => {
         if (!codedToken) {
@@ -29,8 +32,7 @@ export default function UserProfilePage() {
         }
         fetchPosts();
         decodeToken();
-        console.log(id)
-        if(codedToken.id == id){
+        if (codedToken.id == id) {
             setShowButton(false);
         }
         else {
@@ -43,7 +45,7 @@ export default function UserProfilePage() {
         const config = {
             headers: { authorization: `Bearer ${codedToken.token}` }
         };
-        
+
         axios.get(url, config)
             .then((response) => {
                 setPosts(response.data);
@@ -64,25 +66,41 @@ export default function UserProfilePage() {
         }
     }
 
-    function handleFollow(){
-        console.log(id)
+    function handleFollow() {
         const config = {
             headers: { authorization: `Bearer ${codedToken.token}` }
-          };
-          const promise = axios.post(urlFollow,{following_id: id}, config);
-          setIsDisabled(true);
-          promise
+        };
+        const promise = axios.post(urlFollow, { following_id: id }, config);
+        setIsDisabled(true);
+        promise
             .then((a) => {
-              setIsDisabled(false);
-              setFollowing(!isFollowing);
+                setIsDisabled(false);
+                setFollowing(!isFollowing);
             })
             .catch((a) => {
-              alert("There was an error");
-              setIsDisabled(false);
+                alert("There was an error");
+                setIsDisabled(false);
             });
-
     }
 
+    async function loadMorePosts() {
+
+        const config = {
+            headers: { authorization: `Bearer ${codedToken.token}` }
+        };
+
+        axios.get(`${url}?offset=${offset + 10}`, config)
+            .then((response) => {
+                setOffset(offset + 10);
+                const newPosts = response.data;
+                if (newPosts.length < 10) {
+                    setHasMore(false)
+                }
+
+                setPosts((prevPosts) => [...prevPosts, ...newPosts]);
+            })
+            .catch((error) => console.log('Erro ao buscar os posts', error.response));
+    }
 
     return (
         <TimelinePageContainer>
@@ -93,40 +111,47 @@ export default function UserProfilePage() {
                     <FollowButton
                         disabled={isDisabled}
                         following={isFollowing}
-                        onClick={()=>handleFollow()}
-                        showButton = {showButton}
+                        onClick={() => handleFollow()}
+                        showButton={showButton}
                         data-test="follow-btn"
-                        >
-                            {!isFollowing ? "Follow" : "Unfollow"}
-                        </FollowButton>
+                    >
+                        {!isFollowing ? "Follow" : "Unfollow"}
+                    </FollowButton>
                 </TopContainer>
-                
+
 
                 <GridContainer>
                     <div>
                         {posts.length === 0 || posts[0].author === null ? (
                             <NoPostsYet><p>There are no posts yet.</p></NoPostsYet>
                         ) : (
-                            posts.map((post) => {
-                                return (
-                                    <RenderPosts
-                                        tokenJson={token}
-                                        token={codedToken}
-                                        key={post.id}
-                                        username={post.author.username}
-                                        picture_url={post.author.picture}
-                                        description={post.description}
-                                        url={post.url}
-                                        user_liked={post.user_liked}
-                                        total_likes={post.total_likes}
-                                        liked_users={post.liked_users}
-                                        id={post.id}
-                                        user_id={post.user_id}
-                                        setReload={setReload}
-                                        reloadPage={reloadPage}
-                                    />
-                                );
-                            })
+                            <InfiniteScroll
+                                pageStart={0}
+                                loadMore={loadMorePosts}
+                                hasMore={hasMore}
+                                loader={<div key={0}>Loading...</div>}
+                            >
+                                {posts.map((post) => {
+                                    return (
+                                        <RenderPosts
+                                            tokenJson={token}
+                                            token={codedToken}
+                                            key={post.id}
+                                            username={post.author.username}
+                                            picture_url={post.author.picture}
+                                            description={post.description}
+                                            url={post.url}
+                                            user_liked={post.user_liked}
+                                            total_likes={post.total_likes}
+                                            liked_users={post.liked_users}
+                                            id={post.id}
+                                            user_id={post.user_id}
+                                            setReload={setReload}
+                                            reloadPage={reloadPage}
+                                        />
+                                    );
+                                })}
+                            </InfiniteScroll>
                         )}
                     </div>
                     <TrendingsContainer>

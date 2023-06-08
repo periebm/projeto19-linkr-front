@@ -33,7 +33,6 @@ const LinkPreview = ({ url }) => {
             dispatch({ type: TYPES.FETCH_REQUEST });
             try {
                 const response = await urlMetadata(`https://cors-anywhere-nxl6.onrender.com/${url}`);
-                console.log(response)
                 dispatch({ type: TYPES.FETCH_SUCESSS, payload: response });
             } catch (error) {
                 dispatch({ type: TYPES.FETCH_ERROR, payload: error.message });

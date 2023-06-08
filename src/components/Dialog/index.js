@@ -11,7 +11,6 @@ export default function DialogBox({ showModal, setShowModal, id, setReload }) {
 
     function DeletePost() {
         setIsLoading(true)
-        console.log(userInfo.token)
         const config = {
             headers: { Authorization: `Bearer ${userInfo.token}` } 
         }
