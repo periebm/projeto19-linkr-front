@@ -27,21 +27,22 @@ const Comments = ({ postId, isOpen, setTotalComments }) => {
         });
     const { userInfo: { pictureUrl } } = useContext(UserContext);
     const inputRef = useRef(null);
-    
+
 
     useEffect(() => {
-        const fetchComments = async () => {
-            dispatch({ type: TYPES.FETCH_REQUEST });
-            try {
-                const response = await commentsApi.getCommentsById(postId);
-                dispatch({ type: TYPES.FETCH_SUCESSS, payload: response });
-            } catch (error) {
-                dispatch({ type: TYPES.FETCH_ERROR, payload: error.message });
-            }
-        };
-        fetchComments();
-
-    }, []);
+        if (isOpen) {
+            const fetchComments = async () => {
+                dispatch({ type: TYPES.FETCH_REQUEST });
+                try {
+                    const response = await commentsApi.getCommentsById(postId);
+                    dispatch({ type: TYPES.FETCH_SUCESSS, payload: response });
+                } catch (error) {
+                    dispatch({ type: TYPES.FETCH_ERROR, payload: error.message });
+                }
+            };
+            fetchComments();
+        }
+    }, [isOpen]);
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -49,7 +50,7 @@ const Comments = ({ postId, isOpen, setTotalComments }) => {
             dispatch({ type: TYPES.FETCH_REQUEST });
             const response = await commentsApi.createComment({ postId, content: inputRef.current.value });
             dispatch({ type: TYPES.FETCH_SUCESSS, payload: [...comments, ...response] });
-            setTotalComments(previous => Number(previous) + 1)
+            setTotalComments(previous => Number(previous) + 1);
             inputRef.current.value = '';
         } catch (error) {
             dispatch({ type: TYPES.FETCH_ERROR, payload: error.message });
@@ -73,7 +74,7 @@ const Comments = ({ postId, isOpen, setTotalComments }) => {
                                 {comment.author.username}
                                 <span className="highlight">
                                     {comment.is_following ? <>&#x2022; following</> :
-                                     comment.is_owner ? <>&#x2022; post's author</> : <></>
+                                        comment.is_owner ? <>&#x2022; post's author</> : <></>
                                     }
                                 </span>
                             </span>
