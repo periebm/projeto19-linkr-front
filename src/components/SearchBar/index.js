@@ -32,14 +32,10 @@ export default function SearchBar() {
     async function handleChange(e) {
         setValue(e.target.value)
         if (e.target.value.length >= 3) {
-            const config = {
-                headers: { authorization: `Bearer ${codedToken.token}` }
-            };
 
-            users = await getUsers(config);
+            users = await getUsers(codedToken.id);
 
             const newFiltered = filterSearch(e.target.value)
-            console.log(newFiltered)
             setFiltered(newFiltered);
 
             if (newFiltered.length !== 0) {
@@ -75,9 +71,12 @@ export default function SearchBar() {
                 <Dropdown showSearch={showSearch}>
                     {
                         filterArray.map((u) => (
-                            <DropdownRow data-test="user-search"  key={u.id} onClick={() => navigate(`/user/${u.id}`)}>
+                            <DropdownRow data-test="user-search" key={u.id} onClick={() => navigate(`/user/${u.id}`)}>
                                 <img src={u.picture_url} alt="" />
                                 <h3>{u.username}</h3>
+                                {
+                                    u.is_following && <h4>• following</h4>
+                                }
                             </DropdownRow>
                         ))
                             .slice(0, 10)
@@ -89,6 +88,3 @@ export default function SearchBar() {
 
 }
 
-/* {
-    u.is_following && <h4>• following</h4>
-} */
