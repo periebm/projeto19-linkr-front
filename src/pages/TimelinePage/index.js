@@ -108,7 +108,6 @@ export default function TimelinePage() {
                 if (newPosts.length < 10) {
                     setHasMore(false)
                 }
-
                 setPosts((prevPosts) => [...prevPosts, ...newPosts]);
             })
             .catch((error) => console.log('Erro ao buscar os posts', error.response));

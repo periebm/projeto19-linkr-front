@@ -36,7 +36,6 @@ const axiosEndpoints = {};
 for (const method of methods) {
     axiosEndpoints[method] = async function (route, body, query = {}, fullResponse = false) {
         const url = `${route}${queryBuilder(query)}`;
-        console.log(url)
         try {
             const response = await axiosInstance({ method, url, data: body });
             return fullResponse ? response : response.data;

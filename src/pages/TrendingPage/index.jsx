@@ -33,7 +33,7 @@ const reducer = (state, action) => {
             return { ...state, loading: false };
     }
 };
-
+let offset = 0
 const TrendingPage = () => {
     const [{ loading, error, posts }, dispatch] =
         useReducer(reducer, {
@@ -44,7 +44,6 @@ const TrendingPage = () => {
     const [reload, setReload] = useState(false);
     const { hashtag } = useParams();
     const { userInfo } = useContext(UserContext);
-    const [offset, setOffset] = useState(0)
     const [hasMore, setHasMore] = useState(true)
     const navigate = useNavigate()
 
@@ -52,19 +51,20 @@ const TrendingPage = () => {
         if (!userInfo) {
             navigate("/")
         }
+        offset = 0
         fetchPosts();
     }, [reload, hashtag]);
+
 
     const fetchPosts = async () => {
         dispatch({ type: TYPES.FETCH_TRENDING_CHANGE });
         try {
             const response = await Posts.getPostsByHashtag(hashtag, offset);
-            dispatch({ type: TYPES.FETCH_POSTS, posts: response });
+            dispatch({ type: TYPES.FETCH_POSTS, posts: [...posts, ...response] });
             if (response.length < 10) {
                 setHasMore(false)
             }
-            console.log(response)
-            setOffset(offset + 10);
+            offset += 10
         } catch (error) {
             dispatch({ type: TYPES.FETCH_ERROR, payload: error.message });
         }
