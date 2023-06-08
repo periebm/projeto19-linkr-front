@@ -78,7 +78,9 @@ export default function SearchBar() {
                             <DropdownRow data-test="user-search"  key={u.id} onClick={() => navigate(`/user/${u.id}`)}>
                                 <img src={u.picture_url} alt="" />
                                 <h3>{u.username}</h3>
-                                <h4>{u.is_following && "• following"}</h4>
+                                {
+                                    u.is_following && <h4>• following</h4>
+                                }
                             </DropdownRow>
                         ))
                             .slice(0, 10)
