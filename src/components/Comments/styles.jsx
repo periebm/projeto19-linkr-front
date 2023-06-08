@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const Container = styled.ul`
+export const Container = styled.div`
   color:white;
   font-family: 'Lato';
   font-style: normal;

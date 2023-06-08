@@ -28,9 +28,9 @@ const Comments = ({ postId, isOpen, setTotalComments }) => {
     const { userInfo: { pictureUrl } } = useContext(UserContext);
     const inputRef = useRef(null);
 
-
     useEffect(() => {
         if (isOpen) {
+            console.log("Deu fetch")
             const fetchComments = async () => {
                 dispatch({ type: TYPES.FETCH_REQUEST });
                 try {
@@ -65,9 +65,9 @@ const Comments = ({ postId, isOpen, setTotalComments }) => {
 
     return (
         <Container isOpen={isOpen}>
-            <CommentList isOpen={isOpen}>
+            <CommentList isOpen={isOpen} data-test="comment-box">
                 {comments?.map(comment => (
-                    <li key={comment.id}>
+                    <li key={comment.id} data-test="comment">
                         <img src={comment.author.picture} alt="" />
                         <div>
                             <span>
@@ -87,8 +87,8 @@ const Comments = ({ postId, isOpen, setTotalComments }) => {
             </CommentList>
             <form onSubmit={handleSubmit} >
                 <img src={pictureUrl} alt="" />
-                <input type="text" placeholder='write a comment...' required ref={inputRef} onKeyDown={handleKeyDown} />
-                <button>
+                <input type="text" placeholder='write a comment...' required ref={inputRef} onKeyDown={handleKeyDown} data-test="comment-input" />
+                <button data-test="comment-submit">
                     <img src={send} alt="" className='send' />
                 </button>
             </form>

@@ -46,11 +46,12 @@ const TrendingCard = ({ reload }) => {
             <div>
                 {trendings?.map((trending) => (
                     <div key={trending.name} >
-                        <p data-test="hashtag">
+                        <p>
                             <Link
+                                data-test="hashtag"
                                 to={`/hashtag/${trending.name}`}
                             >
-                                # {trending.name}
+                                #{trending.name}
                             </Link>
                         </p>
                     </div>

@@ -218,11 +218,11 @@ export function RenderPosts({
                             {total_likes} {total_likes === 1 ? 'like' : 'likes'}
                         </p>
 
-                        <button style={{ cursor: "pointer" }} disabled={isDisabled} onClick={() => setIsOpen(!isOpen)}>
+                        <button data-test="comment-btn" style={{ cursor: "pointer" }} disabled={isDisabled} onClick={() => setIsOpen(!isOpen)}>
                             <img src={commentIcon} alt=""></img>
                         </button>
 
-                        <p data-test="counter">
+                        <p data-test="comment-counter">
                             {totalComments} {total_comments === 1 ? 'comment' : 'comments'}
                         </p>
 
@@ -243,6 +243,7 @@ export function RenderPosts({
                     <UserName data-test="username" onClick={() => navigate(`/user/${user_id}`)}>{username}</UserName>
                     {isEditing ? (
                         <EditInput
+                            data-test="edit-input"
                             type="text"
                             ref={inputRef}
                             value={descriptionState}
@@ -258,7 +259,7 @@ export function RenderPosts({
                     <UrlContainer>
                         <LinkPreview url={url}></LinkPreview>
                     </UrlContainer>
-                    {(userInfo.id) === (user_id) && <StyledPencil onClick={handleEditClick} />}
+                    {(userInfo.id) === (user_id) && <StyledPencil data-test="edit-btn" onClick={handleEditClick} />}
                     {(userInfo.id) === (user_id) && <StyledTrash data-test="delete-btn" onClick={() => setShowModal(true)} />}
                 </PostContentContainer>
             </PostContainer>
