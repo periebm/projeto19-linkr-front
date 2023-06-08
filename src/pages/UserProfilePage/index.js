@@ -21,6 +21,7 @@ export default function UserProfilePage() {
     const urlFollow = `${initialUrl}/follow`
     const navigate = useNavigate();
     const [isDisabled, setIsDisabled] = useState(false);
+    const [limit, setLimit] = useState(10)
     const [isFollowing, setFollowing] = useState(false);
     const [showButton, setShowButton] = useState(true);
     const [offset, setOffset] = useState(0)
@@ -48,7 +49,8 @@ export default function UserProfilePage() {
 
         axios.get(url, config)
             .then((response) => {
-                setPosts(response.data);
+                const postsData = response.data.slice(0, limit);
+                setPosts(postsData);
                 setFollowing(response.data[0].is_following)
                 setUsername(response.data[0].username)
             })
@@ -92,6 +94,7 @@ export default function UserProfilePage() {
         axios.get(`${url}?offset=${offset + 10}`, config)
             .then((response) => {
                 setOffset(offset + 10);
+                setLimit(limit + 10)
                 const newPosts = response.data;
                 if (newPosts.length < 10) {
                     setHasMore(false)
