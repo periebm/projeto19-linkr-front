@@ -33,7 +33,7 @@ const reducer = (state, action) => {
             return { ...state, loading: false };
     }
 };
-let offset = 0
+
 const TrendingPage = () => {
     const [{ loading, error, posts }, dispatch] =
         useReducer(reducer, {
@@ -44,34 +44,43 @@ const TrendingPage = () => {
     const [reload, setReload] = useState(false);
     const { hashtag } = useParams();
     const { userInfo } = useContext(UserContext);
-    const [hasMore, setHasMore] = useState(true)
-    const navigate = useNavigate()
-
-    useEffect(() => {
-        if (!userInfo) {
-            navigate("/")
-        }
-        offset = 0
-        fetchPosts();
-    }, [reload, hashtag]);
-
+    const [hasMore, setHasMore] = useState(true);
+    const [offset, setOffset] = useState(0);
+    const navigate = useNavigate();
 
     const fetchPosts = async () => {
         dispatch({ type: TYPES.FETCH_TRENDING_CHANGE });
         try {
             const response = await Posts.getPostsByHashtag(hashtag, offset);
-            dispatch({ type: TYPES.FETCH_POSTS, posts: [...posts, ...response] });
-            if (response.length < 10) {
-                setHasMore(false)
-            }
-            offset += 10
+            dispatch({ type: TYPES.FETCH_POSTS, posts: response });
         } catch (error) {
             dispatch({ type: TYPES.FETCH_ERROR, payload: error.message });
         }
     };
 
+    useEffect(() => {
+        if (!userInfo) {
+            navigate("/");
+        }
+        setOffset(previous => Number(previous) * 0);
+        setHasMore(true);
+        fetchPosts();
+    }, [reload, hashtag]);
+
     async function loadMorePosts() {
-        fetchPosts()
+        try {
+            const response = await Posts.getPostsByHashtag(hashtag, offset);
+            dispatch({ type: TYPES.FETCH_POSTS, posts: [...posts, ...response] });
+
+            if (response.length < 10) {
+                setOffset(previous => Number(previous) * 0);
+                setHasMore(false);
+            }
+
+            setOffset(previous => Number(previous) + 10);
+        } catch (error) {
+            dispatch({ type: TYPES.FETCH_ERROR, payload: error.message });
+        }
     }
 
     return (

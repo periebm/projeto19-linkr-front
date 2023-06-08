@@ -10,6 +10,7 @@ const SkeletonTrending = () => {
                     height: "280px",
                     width: "600px",
                     borderRadius: "15px",
+                    marginBottom:"20px"
                 }} />
             ))}
         </SkeletonTheme>
