@@ -1,12 +1,13 @@
 /* eslint-disable import/no-anonymous-default-export */
 import api from "./api";
 
-const getPosts = () => {
+const getPosts = () => { 
     return api.get('/posts');
 };
 
-const getPostsByHashtag = (hashtag) => {
-    return api.get(`/posts/${hashtag}`);
+const getPostsByHashtag = (hashtag, offset) => {
+    const query = {offset}
+    return api.get(`/posts/${hashtag}`, {}, query);
 };
 
 const updatePost = (body, id) => {
