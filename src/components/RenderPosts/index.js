@@ -218,11 +218,11 @@ export function RenderPosts({
                             {total_likes} {total_likes === 1 ? 'like' : 'likes'}
                         </p>
 
-                        <button style={{ cursor: "pointer" }} disabled={isDisabled} onClick={() => setIsOpen(!isOpen)}>
+                        <button data-test="comment-btn" style={{ cursor: "pointer" }} disabled={isDisabled} onClick={() => setIsOpen(!isOpen)}>
                             <img src={commentIcon} alt=""></img>
                         </button>
 
-                        <p data-test="counter">
+                        <p data-test="comment-counter">
                             {totalComments} {total_comments === 1 ? 'comment' : 'comments'}
                         </p>
 
