@@ -6,7 +6,7 @@ import TrendingCard from '../../components/TrendingCard';
 import { RenderPosts } from '../../components/RenderPosts';
 import Header from '../../components/Header/Header';
 import { UserContext } from '../../App';
-
+import InfiniteScroll from 'react-infinite-scroller';
 import { Container, PostsArea, MainContent } from './styles';
 
 const TYPES = Object.freeze({
@@ -33,7 +33,7 @@ const reducer = (state, action) => {
             return { ...state, loading: false };
     }
 };
-
+let offset = 0
 const TrendingPage = () => {
     const [{ loading, error, posts }, dispatch] =
         useReducer(reducer, {
@@ -44,25 +44,35 @@ const TrendingPage = () => {
     const [reload, setReload] = useState(false);
     const { hashtag } = useParams();
     const { userInfo } = useContext(UserContext);
+    const [hasMore, setHasMore] = useState(true)
     const navigate = useNavigate()
 
     useEffect(() => {
-        if(!userInfo){
+        if (!userInfo) {
             navigate("/")
         }
-
-        const fetchPosts = async () => {
-            dispatch({ type: TYPES.FETCH_TRENDING_CHANGE });
-            try {
-                const response = await Posts.getPostsByHashtag(hashtag);
-                dispatch({ type: TYPES.FETCH_POSTS, posts: response });
-            } catch (error) {
-                dispatch({ type: TYPES.FETCH_ERROR, payload: error.message });
-            }
-        };
-
+        offset = 0
         fetchPosts();
     }, [reload, hashtag]);
+
+
+    const fetchPosts = async () => {
+        dispatch({ type: TYPES.FETCH_TRENDING_CHANGE });
+        try {
+            const response = await Posts.getPostsByHashtag(hashtag, offset);
+            dispatch({ type: TYPES.FETCH_POSTS, posts: [...posts, ...response] });
+            if (response.length < 10) {
+                setHasMore(false)
+            }
+            offset += 10
+        } catch (error) {
+            dispatch({ type: TYPES.FETCH_ERROR, payload: error.message });
+        }
+    };
+
+    async function loadMorePosts() {
+        fetchPosts()
+    }
 
     return (
         <Container>
@@ -72,8 +82,13 @@ const TrendingPage = () => {
                 <PostsArea>
                     {loading ?
                         <SkeletonTrending /> :
-                        (
-                            posts?.map((post, index) => (
+                        (<InfiniteScroll
+                            pageStart={0}
+                            loadMore={loadMorePosts}
+                            hasMore={hasMore}
+                            loader={<div key={0}>Loading...</div>}>
+
+                            {posts?.map((post, index) => (
                                 <RenderPosts
                                     username={post.author.username}
                                     description={post.description}
@@ -90,10 +105,11 @@ const TrendingPage = () => {
                                     total_comments={post.total_comments}
                                     setReload={setReload}
                                 />
-                            ))
+                            ))}
+                        </InfiniteScroll>
                         )}
                 </PostsArea>
-                <TrendingCard reload={reload}/>
+                <TrendingCard reload={reload} />
             </MainContent>
         </Container>
     );
