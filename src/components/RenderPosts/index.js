@@ -226,12 +226,12 @@ export function RenderPosts({
                             {totalComments} {total_comments === 1 ? 'comment' : 'comments'}
                         </p>
 
-                        <button style={{ cursor: "pointer" }} disabled={isDisabled} onClick={() => { }}>
+                        <button data-test="repost-btn" style={{ cursor: "pointer" }} disabled={isDisabled} onClick={repostPost}>
                             <img src={repostImg} alt="" />
                         </button>
 
                         <ReactTooltip data-test="tooltip" id="like-number" style={{ backgroundColor: "rgba(255, 255, 255, 0.9)", color: "#505050" }} />
-                        <p data-test="counter"
+                        <p data-test="repost-counter"
                             data-tooltip-id="like-number"
                             data-tooltip-place="bottom"
                         >

@@ -113,6 +113,7 @@ const TrendingPage = () => {
                                     id={post.id}
                                     total_comments={post.total_comments}
                                     setReload={setReload}
+                                    total_reposts={post.total_reposts}
                                 />
                             ))}
                         </InfiniteScroll>

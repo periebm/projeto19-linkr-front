@@ -151,6 +151,7 @@ export default function UserProfilePage() {
                                             user_id={post.user_id}
                                             setReload={setReload}
                                             reloadPage={reloadPage}
+                                            total_reposts={post.total_reposts}
                                         />
                                     );
                                 })}
