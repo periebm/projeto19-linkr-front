@@ -82,7 +82,6 @@ const TrendingPage = () => {
             dispatch({ type: TYPES.FETCH_ERROR, payload: error.message });
         }
     }
-
     return (
         <Container>
             <Header />
@@ -113,6 +112,7 @@ const TrendingPage = () => {
                                     id={post.id}
                                     total_comments={post.total_comments}
                                     setReload={setReload}
+                                    total_reposts={post.total_reposts}
                                 />
                             ))}
                         </InfiniteScroll>
