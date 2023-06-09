@@ -82,7 +82,6 @@ const TrendingPage = () => {
             dispatch({ type: TYPES.FETCH_ERROR, payload: error.message });
         }
     }
-
     return (
         <Container>
             <Header />
